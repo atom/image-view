@@ -1,0 +1,7 @@
+{
+  "description": "View images in the editor",
+  "main": "./lib/image-edit-session",
+  "deferredDeserializers": [
+    "ImageEditSession"
+  ]
+}
