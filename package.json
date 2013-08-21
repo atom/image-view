@@ -3,9 +3,6 @@
   "version": "0.2.0",
   "description": "View images in the editor",
   "main": "./lib/image-edit-session",
-  "deferredDeserializers": [
-    "ImageEditSession"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/atom/image-view.git"
