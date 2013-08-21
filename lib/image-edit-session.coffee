@@ -1,12 +1,16 @@
-fsUtils = require 'fs-utils'
 path = require 'path'
+
 _ = require 'underscore'
+telepath = require 'telepath'
+
+fsUtils = require 'fs-utils'
 
 # Public: Manages the states between {Editor}s, images, and the project as a whole.
 #
 # Essentially, the graphical version of a {EditSession}.
 module.exports=
 class ImageEditSession
+  @acceptsDocuments: true
   registerDeserializer(this)
   @version: 1
 
@@ -16,20 +20,30 @@ class ImageEditSession
     Project = require 'project'
     Project.registerOpener (filePath) ->
       if _.include(imageExtensions, path.extname(filePath))
-        new ImageEditSession(filePath)
+        new ImageEditSession(path: filePath)
 
-  @deserialize: ({path}={}) ->
-    path = project.resolve(path)
-    if fsUtils.isFileSync(path)
-      new ImageEditSession(path)
+  @deserialize: (state) ->
+    relativePath = state.get('relativePath')
+    resolvedPath = project.resolve(relativePath) if relativePath
+    if fsUtils.isFileSync(resolvedPath)
+      new ImageEditSession(state)
     else
-      console.warn "Could not build image edit session for path '#{path}' because that file no longer exists"
+      console.warn "Could not build image edit session for path '#{relativePath}' because that file no longer exists"
 
-  constructor: (@path) ->
+  constructor: (optionsOrState) ->
+    if optionsOrState instanceof telepath.Document
+      @state = optionsOrState
+      @path = project.resolve(@getRelativePath())
+    else
+      {@path} = optionsOrState
+      @state = site.createDocument
+        deserializer: @constructor.name
+        version: @constructor.version
+        relativePath: project.relativize(@path)
 
-  serialize: ->
-    deserializer: 'ImageEditSession'
-    path: @getUri()
+  serialize: -> @state.clone()
+
+  getState: -> @state
 
   getViewClass: ->
     require './image-view'
@@ -50,7 +64,9 @@ class ImageEditSession
   # Retrieves the URI of the current image.
   #
   # Returns a {String}.
-  getUri: -> project?.relativize(@getPath()) ? @getPath()
+  getUri: -> @getRelativePath()
+
+  getRelativePath: -> @state.get('relativePath')
 
   # Retrieves the path of the current image.
   #

@@ -11,14 +11,14 @@ describe "ImageView", ->
     view.height(100)
 
   it "displays the image for a path", ->
-    view.setModel(new ImageEditSession(path))
+    view.setModel(new ImageEditSession({path}))
     expect(view.image.attr('src')).toBe path
 
   it "centers the image in the editor", ->
     imageLoaded = false
     view.image.load =>
       imageLoaded = true
-    view.setModel(new ImageEditSession(path))
+    view.setModel(new ImageEditSession({path}))
 
     waitsFor ->
       imageLoaded
@@ -34,7 +34,7 @@ describe "ImageView", ->
       imageLoaded = false
       view.image.load =>
         imageLoaded = true
-      view.setModel(new ImageEditSession(path))
+      view.setModel(new ImageEditSession({path}))
 
       waitsFor ->
         imageLoaded
@@ -49,7 +49,7 @@ describe "ImageView", ->
       imageLoaded = false
       view.image.load =>
         imageLoaded = true
-      view.setModel(new ImageEditSession(path))
+      view.setModel(new ImageEditSession({path}))
 
       waitsFor ->
         imageLoaded
@@ -64,7 +64,7 @@ describe "ImageView", ->
       imageLoaded = false
       view.image.load =>
         imageLoaded = true
-      view.setModel(new ImageEditSession(path))
+      view.setModel(new ImageEditSession({path}))
 
       waitsFor ->
         imageLoaded
