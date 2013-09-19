@@ -1,4 +1,4 @@
-{_, $, ScrollView} = require 'atom-api'
+{_, $, ScrollView} = require 'atom'
 
 # Public: Renders images in the {Editor}.
 module.exports =

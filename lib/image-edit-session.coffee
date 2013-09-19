@@ -1,6 +1,6 @@
 path = require 'path'
 
-{_, fs} = require 'atom-api'
+{_, fs} = require 'atom'
 telepath = require 'telepath'
 
 # Public: Manages the states between {Editor}s, images, and the project as a whole.
