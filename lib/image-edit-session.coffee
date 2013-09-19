@@ -1,9 +1,7 @@
 path = require 'path'
 
-_ = require 'underscore'
+{_, fs} = require 'atom-api'
 telepath = require 'telepath'
-
-fsUtils = require 'fs-utils'
 
 # Public: Manages the states between {Editor}s, images, and the project as a whole.
 #
@@ -17,15 +15,14 @@ class ImageEditSession
   @activate: ->
     # Files with these extensions will be opened as images
     imageExtensions = ['.gif', '.jpeg', '.jpg', '.png']
-    Project = require 'project'
-    Project.registerOpener (filePath) ->
+    project.registerOpener (filePath) ->
       if _.include(imageExtensions, path.extname(filePath))
         new ImageEditSession(path: filePath)
 
   @deserialize: (state) ->
     relativePath = state.get('relativePath')
     resolvedPath = project.resolve(relativePath) if relativePath
-    if fsUtils.isFileSync(resolvedPath)
+    if fs.isFileSync(resolvedPath)
       new ImageEditSession(state)
     else
       console.warn "Could not build image edit session for path '#{relativePath}' because that file no longer exists"

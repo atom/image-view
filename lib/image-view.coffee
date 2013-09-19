@@ -1,6 +1,4 @@
-ScrollView = require 'scroll-view'
-_ = require 'underscore'
-$ = require 'jquery'
+{_, $, ScrollView} = require 'atom-api'
 
 # Public: Renders images in the {Editor}.
 module.exports =
