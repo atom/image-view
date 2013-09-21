@@ -1,7 +1,5 @@
 path = require 'path'
-
-{_, fs} = require 'atom'
-telepath = require 'telepath'
+{_, Document, fs} = require 'atom'
 
 # Public: Manages the states between {Editor}s, images, and the project as a whole.
 #
@@ -28,7 +26,7 @@ class ImageEditSession
       console.warn "Could not build image edit session for path '#{relativePath}' because that file no longer exists"
 
   constructor: (optionsOrState) ->
-    if optionsOrState instanceof telepath.Document
+    if optionsOrState instanceof Document
       @state = optionsOrState
       @path = project.resolve(@getRelativePath())
     else
