@@ -1,6 +1,6 @@
 {
   "name": "image-view",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "View images in the editor",
   "main": "./lib/image-edit-session",
   "repository": {
