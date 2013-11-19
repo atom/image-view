@@ -7,19 +7,19 @@ path = require 'path'
 module.exports=
 class ImageEditSession
   @acceptsDocuments: true
-  registerDeserializer(this)
+  atom.deserializers.add(this)
   @version: 1
 
   @activate: ->
     # Files with these extensions will be opened as images
     imageExtensions = ['.gif', '.jpeg', '.jpg', '.png']
-    project.registerOpener (filePath) ->
+    atom.project.registerOpener (filePath) ->
       if _.include(imageExtensions, path.extname(filePath))
         new ImageEditSession(path: filePath)
 
   @deserialize: (state) ->
     relativePath = state.get('relativePath')
-    resolvedPath = project.resolve(relativePath) if relativePath
+    resolvedPath = atom.project.resolve(relativePath) if relativePath
     if fs.isFileSync(resolvedPath)
       new ImageEditSession(state)
     else
@@ -28,13 +28,13 @@ class ImageEditSession
   constructor: (optionsOrState) ->
     if optionsOrState instanceof Document
       @state = optionsOrState
-      @path = project.resolve(@getRelativePath())
+      @path = atom.project.resolve(@getRelativePath())
     else
       {@path} = optionsOrState
-      @state = site.createDocument
+      @state = atom.site.createDocument
         deserializer: @constructor.name
         version: @constructor.version
-        relativePath: project.relativize(@path)
+        relativePath: atom.project.relativize(@path)
 
   serialize: -> @state.clone()
 

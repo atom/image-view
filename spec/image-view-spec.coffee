@@ -5,7 +5,7 @@ describe "ImageView", ->
   [view, path] = []
 
   beforeEach ->
-    path = project.resolve('binary-file.png')
+    path = atom.project.resolve('binary-file.png')
     view = new ImageView()
     view.attachToDom()
     view.height(100)
