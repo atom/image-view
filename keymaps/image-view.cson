@@ -1,6 +1,13 @@
-'.image-view':
-  'meta-+': 'image-view:zoom-in'
-  'meta-=': 'image-view:zoom-in'
-  'meta--': 'image-view:zoom-out'
-  'meta-_': 'image-view:zoom-out'
-  'meta-0': 'image-view:reset-zoom'
+'.platform-darwin .image-view':
+  'cmd-+': 'image-view:zoom-in'
+  'cmd-=': 'image-view:zoom-in'
+  'cmd--': 'image-view:zoom-out'
+  'cmd-_': 'image-view:zoom-out'
+  'cmd-0': 'image-view:reset-zoom'
+
+'.platform-win32 .image-view':
+  'ctrl-+': 'image-view:zoom-in'
+  'ctrl-=': 'image-view:zoom-in'
+  'ctrl--': 'image-view:zoom-out'
+  'ctrl-_': 'image-view:zoom-out'
+  'ctrl-0': 'image-view:reset-zoom'
