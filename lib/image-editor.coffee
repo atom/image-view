@@ -5,7 +5,7 @@ path = require 'path'
 #
 # Essentially, the graphical version of a {EditSession}.
 module.exports=
-class ImageEditSession
+class ImageEditor
   @acceptsDocuments: true
   atom.deserializers.add(this)
   @version: 1
@@ -15,13 +15,13 @@ class ImageEditSession
     imageExtensions = ['.gif', '.jpeg', '.jpg', '.png']
     atom.project.registerOpener (filePath) ->
       if _.include(imageExtensions, path.extname(filePath))
-        new ImageEditSession(path: filePath)
+        new ImageEditor(path: filePath)
 
   @deserialize: (state) ->
     relativePath = state.get('relativePath')
     resolvedPath = atom.project.resolve(relativePath) if relativePath
     if fs.isFileSync(resolvedPath)
-      new ImageEditSession(state)
+      new ImageEditor(state)
     else
       console.warn "Could not build image edit session for path '#{relativePath}' because that file no longer exists"
 
@@ -41,7 +41,7 @@ class ImageEditSession
   getState: -> @state
 
   getViewClass: ->
-    require './image-view'
+    require './image-editor-view'
 
   ### Public ###
 
@@ -68,10 +68,10 @@ class ImageEditSession
   # Returns a {String}.
   getPath: -> @path
 
-  # Compares two `ImageEditSession`s to determine equality.
+  # Compares two `ImageEditor`s to determine equality.
   #
   # Equality is based on the condition that the two URIs are the same.
   #
   # Returns a {Boolean}.
   isEqual: (other) ->
-    other instanceof ImageEditSession and @getUri() is other.getUri()
+    other instanceof ImageEditor and @getUri() is other.getUri()

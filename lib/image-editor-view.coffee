@@ -2,7 +2,7 @@
 
 # Public: Renders images in the {Editor}.
 module.exports =
-class ImageView extends ScrollView
+class ImageEditorView extends ScrollView
 
   ### Internal ###
 
@@ -11,7 +11,7 @@ class ImageView extends ScrollView
       @div class: 'image-container', =>
         @img outlet: 'image'
 
-  initialize: (imageEditSession) ->
+  initialize: (imageEditor) ->
     super
 
     @image.load =>
@@ -19,7 +19,7 @@ class ImageView extends ScrollView
       @originalWidth = @image.width()
       @loaded = true
       @centerImage()
-    @setPath(imageEditSession?.getPath())
+    @setPath(imageEditor?.getPath())
 
     @subscribe $(window), 'resize', _.debounce((=> @centerImage()), 300)
     @command 'image-view:zoom-in', => @zoomIn()
@@ -95,5 +95,5 @@ class ImageView extends ScrollView
     @image.height(newHeight)
     @centerImage()
 
-  setModel: (imageEditSession) ->
-    @setPath(imageEditSession?.getPath())
+  setModel: (imageEditor) ->
+    @setPath(imageEditor?.getPath())

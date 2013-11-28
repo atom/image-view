@@ -1,24 +1,24 @@
-ImageView = require '../lib/image-view'
-ImageEditSession = require '../lib/image-edit-session'
+ImageEditorView = require '../lib/image-editor-view'
+ImageEditor = require '../lib/image-editor'
 
-describe "ImageView", ->
+describe "ImageEditorView", ->
   [view, path] = []
 
   beforeEach ->
     path = atom.project.resolve('binary-file.png')
-    view = new ImageView()
+    view = new ImageEditorView()
     view.attachToDom()
     view.height(100)
 
   it "displays the image for a path", ->
-    view.setModel(new ImageEditSession({path}))
+    view.setModel(new ImageEditor({path}))
     expect(view.image.attr('src')).toBe path
 
   it "centers the image in the editor", ->
     imageLoaded = false
     view.image.load =>
       imageLoaded = true
-    view.setModel(new ImageEditSession({path}))
+    view.setModel(new ImageEditor({path}))
 
     waitsFor ->
       imageLoaded
@@ -34,7 +34,7 @@ describe "ImageView", ->
       imageLoaded = false
       view.image.load =>
         imageLoaded = true
-      view.setModel(new ImageEditSession({path}))
+      view.setModel(new ImageEditor({path}))
 
       waitsFor ->
         imageLoaded
@@ -49,7 +49,7 @@ describe "ImageView", ->
       imageLoaded = false
       view.image.load =>
         imageLoaded = true
-      view.setModel(new ImageEditSession({path}))
+      view.setModel(new ImageEditor({path}))
 
       waitsFor ->
         imageLoaded
@@ -64,7 +64,7 @@ describe "ImageView", ->
       imageLoaded = false
       view.image.load =>
         imageLoaded = true
-      view.setModel(new ImageEditSession({path}))
+      view.setModel(new ImageEditor({path}))
 
       waitsFor ->
         imageLoaded
