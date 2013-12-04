@@ -3,17 +3,8 @@
   "version": "0.10.0",
   "description": "View images in the editor",
   "main": "./lib/image-editor",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/atom/image-view.git"
-  },
-  "bugs": {
-    "url": "https://github.com/atom/image-view/issues"
-  },
+  "repository": "https://github.com/atom/image-view",
   "engines": {
     "atom": "*"
-  },
-  "publishConfig": {
-    "registry": "https://atom.cloudant.com/registry/_design/app/_rewrite"
   }
 }
