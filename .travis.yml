@@ -1,0 +1,6 @@
+language: objective-c
+script: 'curl -s -H "Authorization: token $ATOM_ACCESS_TOKEN" -H "Accept: application/vnd.github.v3.raw"
+  https://api.github.com/repos/atom/apm/contents/script/build-package | sh'
+env:
+  global:
+    secure: iXRiyxqXmw30hndLrlx375DwQZVriVOBcHU8cl1XL7As/1O1yDkQ7AWFzKyTZCZl/v8hTscLZ3psomoFako8Alxjw/kSYACFPLljaK8j8d9g002eMkjgsU7o3/ff+xoh5HBHiw/3FQTK0mCcmUNslhOdmiPz7+3ARSEr3Lmmuvw=
