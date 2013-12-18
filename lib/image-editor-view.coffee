@@ -19,7 +19,7 @@ class ImageEditorView extends ScrollView
       @originalWidth = @image.width()
       @loaded = true
       @centerImage()
-    @setPath(imageEditor?.getPath())
+    @setPath(imageEditor?.path)
 
     @subscribe $(window), 'resize', _.debounce((=> @centerImage()), 300)
     @command 'image-view:zoom-in', => @zoomIn()
@@ -96,4 +96,4 @@ class ImageEditorView extends ScrollView
     @centerImage()
 
   setModel: (imageEditor) ->
-    @setPath(imageEditor?.getPath())
+    @setPath(imageEditor?.path)

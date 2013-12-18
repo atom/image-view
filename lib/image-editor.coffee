@@ -46,12 +46,6 @@ class ImageEditor extends Model
   # Returns a {String}.
   getUri: -> @relativePath
 
-  # Deprecated: Use property directly instead
-  getRelativePath: -> @relativePath
-
-  # Deprecated: Use property directly instead
-  getPath: -> @path
-
   # Compares two `ImageEditor`s to determine equality.
   #
   # Equality is based on the condition that the two URIs are the same.
