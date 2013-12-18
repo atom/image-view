@@ -6,7 +6,6 @@ path = require 'path'
 # Essentially, the graphical version of a {EditSession}.
 module.exports =
 class ImageEditor extends Model
-  console.log "registering ImageEditor as representation class"
   atom.registerRepresentationClass(this)
 
   @properties
