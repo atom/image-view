@@ -1,14 +1,18 @@
 path = require 'path'
-{_, Document, fs} = require 'atom'
+{_, Model, fs} = require 'atom'
 
 # Public: Manages the states between {Editor}s, images, and the project as a whole.
 #
 # Essentially, the graphical version of a {EditSession}.
-module.exports=
-class ImageEditor
-  @acceptsDocuments: true
-  atom.deserializers.add(this)
-  @version: 1
+module.exports =
+class ImageEditor extends Model
+  atom.registerRepresentationClass(this)
+
+  @properties
+    path: null
+
+  @behavior 'relativePath', ->
+    @$path.map (path) -> atom.project.relativize(path)
 
   @activate: ->
     # Files with these extensions will be opened as images
@@ -17,31 +21,17 @@ class ImageEditor
       if _.include(imageExtensions, path.extname(filePath))
         new ImageEditor(path: filePath)
 
-  @deserialize: (state) ->
-    relativePath = state.get('relativePath')
-    resolvedPath = atom.project.resolve(relativePath) if relativePath
-    if fs.isFileSync(resolvedPath)
-      new ImageEditor(state)
-    else
-      console.warn "Could not build image edit session for path '#{relativePath}' because that file no longer exists"
-
-  constructor: (optionsOrState) ->
-    if optionsOrState instanceof Document
-      @state = optionsOrState
-      @path = atom.project.resolve(@getRelativePath())
-    else
-      {@path} = optionsOrState
-      @state = atom.site.createDocument
-        deserializer: @constructor.name
-        version: @constructor.version
-        relativePath: atom.project.relativize(@path)
-
-  serialize: -> @state.clone()
-
-  getState: -> @state
+  created: ->
+    unless fs.isFileSync(@path)
+      console.warn "Could not build image editor for path '#{@path}' because that file no longer exists"
+      @destroy()
 
   getViewClass: ->
     require './image-editor-view'
+
+  # Deprecated: This is only present for backward compatibility with current pane
+  # items implementation
+  serialize: -> this
 
   ### Public ###
 
@@ -51,22 +41,15 @@ class ImageEditor
   #
   # Returns a {String}.
   getTitle: ->
-    if sessionPath = @getPath()
-      path.basename(sessionPath)
+    if @path?
+      path.basename(@path)
     else
       'untitled'
 
   # Retrieves the URI of the current image.
   #
   # Returns a {String}.
-  getUri: -> @getRelativePath()
-
-  getRelativePath: -> @state.get('relativePath')
-
-  # Retrieves the path of the current image.
-  #
-  # Returns a {String}.
-  getPath: -> @path
+  getUri: -> @relativePath
 
   # Compares two `ImageEditor`s to determine equality.
   #
