@@ -20,6 +20,8 @@ class ImageEditor extends Model
     atom.project.registerOpener (filePath) ->
       if _.include(imageExtensions, path.extname(filePath))
         new ImageEditor(path: filePath)
+  created: ->
+    @destroy() unless fs.isFileSync(@path)
 
   getViewClass: ->
     require './image-editor-view'
