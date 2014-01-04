@@ -6,5 +6,9 @@
   "repository": "https://github.com/atom/image-view",
   "engines": {
     "atom": "*"
+  },
+  "dependencies": {
+    "reactionary": "~0.2.0",
+    "serializable": "~0.2.0"
   }
 }
