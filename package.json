@@ -8,7 +8,7 @@
     "atom": "*"
   },
   "dependencies": {
-    "reactionary": "~0.2.0",
+    "reactionary": "~0.4.0",
     "serializable": "~0.2.0"
   }
 }
