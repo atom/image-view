@@ -1,8 +1,12 @@
-{Document} = require 'atom'
+path = require 'path'
 ImageEditor = require '../lib/image-editor'
 
 describe "ImageEditor", ->
-  it "destroys itself upon creation if no file exists at the given path", ->
-    doc = Document.create()
-    doc.set('imageEditor', new ImageEditor(path: "bogus"))
-    expect(doc.has('imageEditor')).toBe false
+  describe ".deserialize(state)", ->
+    it "returns undefined if no file exists at the given path", ->
+      spyOn(console, 'warn') # suppress logging in spec
+      editor = new ImageEditor(path: path.join(__dirname, 'fixtures', 'binary-file.png'))
+      state = editor.serialize()
+      expect(ImageEditor.deserialize(state)).toBeDefined()
+      state.path = 'bogus'
+      expect(ImageEditor.deserialize(state)).toBeUndefined()

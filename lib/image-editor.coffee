@@ -1,12 +1,15 @@
 path = require 'path'
-{_, Model, fs} = require 'atom'
+{Model} = require 'reactionary'
+Serializable = require 'serializable'
+{_, fs} = require 'atom'
 
 # Public: Manages the states between {Editor}s, images, and the project as a whole.
 #
 # Essentially, the graphical version of a {EditSession}.
 module.exports =
 class ImageEditor extends Model
-  atom.registerRepresentationClass(this)
+  Serializable.includeInto(this)
+  atom.deserializers.add(this)
 
   @properties
     path: null
@@ -21,17 +24,17 @@ class ImageEditor extends Model
       if _.include(imageExtensions, path.extname(filePath))
         new ImageEditor(path: filePath)
 
-  created: ->
-    unless fs.isFileSync(@path)
-      console.warn "Could not build image editor for path '#{@path}' because that file no longer exists"
-      @destroy()
+  serializeParams: ->
+    {@path}
+
+  deserializeParams: (params) ->
+    if fs.isFileSync(params.path)
+      params
+    else
+      console.warn "Could not deserialize image editor for path '#{params.path}' because that file no longer exists"
 
   getViewClass: ->
     require './image-editor-view'
-
-  # Deprecated: This is only present for backward compatibility with current pane
-  # items implementation
-  serialize: -> this
 
   ### Public ###
 
