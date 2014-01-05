@@ -1,5 +1,5 @@
 path = require 'path'
-{Model} = require 'atomic-model'
+{Model} = require 'theorist'
 Serializable = require 'serializable'
 {_, fs} = require 'atom'
 
