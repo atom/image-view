@@ -19,7 +19,7 @@ class ImageEditor extends Model
 
   @activate: ->
     # Files with these extensions will be opened as images
-    imageExtensions = ['.gif', '.jpeg', '.jpg', '.png']
+    imageExtensions = ['.gif', '.ico', '.jpeg', '.jpg', '.png']
     atom.project.registerOpener (filePath) ->
       if _.include(imageExtensions, path.extname(filePath))
         new ImageEditor(path: filePath)
