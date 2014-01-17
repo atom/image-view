@@ -8,7 +8,7 @@
     "atom": "*"
   },
   "dependencies": {
-    "theorist": "~0.7.0",
+    "theorist": "1.x",
     "serializable": "1.x"
   }
 }
