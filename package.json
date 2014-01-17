@@ -9,6 +9,6 @@
   },
   "dependencies": {
     "theorist": "~0.7.0",
-    "serializable": "~0.2.0"
+    "serializable": "1.x"
   }
 }
