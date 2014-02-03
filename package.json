@@ -8,7 +8,9 @@
     "atom": "*"
   },
   "dependencies": {
+    "fs-plus": "1.x",
+    "serializable": "1.x",
     "theorist": "1.x",
-    "serializable": "1.x"
+    "underscore-plus": "1.x"
   }
 }

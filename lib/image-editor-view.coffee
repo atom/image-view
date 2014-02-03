@@ -1,4 +1,5 @@
-{_, $, ScrollView} = require 'atom'
+_ = require 'underscore-plus'
+{$, ScrollView} = require 'atom'
 
 # Public: Renders images in the {Editor}.
 module.exports =

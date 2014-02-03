@@ -1,7 +1,9 @@
 path = require 'path'
+
+_ = require 'underscore-plus'
+fs = require 'fs-plus'
 {Model} = require 'theorist'
 Serializable = require 'serializable'
-{_, fs} = require 'atom'
 
 # Editor model for an image file
 module.exports =
