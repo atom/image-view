@@ -3,7 +3,7 @@ path = require 'path'
 Serializable = require 'serializable'
 {_, fs} = require 'atom'
 
-# Public: Manages the states between {Editor}s, images, and the project as a whole.
+# Manages the states between {Editor}s, images, and the project as a whole.
 #
 # Essentially, the graphical version of a {EditSession}.
 module.exports =
@@ -35,8 +35,6 @@ class ImageEditor extends Model
 
   getViewClass: ->
     require './image-editor-view'
-
-  ### Public ###
 
   # Retrieves the filename of the open file.
   #
