@@ -1,26 +1,25 @@
 _ = require 'underscore-plus'
 {$, ScrollView} = require 'atom'
 
-# Public: Renders images in the {Editor}.
+# Renders the image in an {ImageEditor}.
 module.exports =
 class ImageEditorView extends ScrollView
-
-  ### Internal ###
-
   @content: ->
     @div class: 'image-view', tabindex: -1, =>
       @div class: 'image-container', =>
         @img outlet: 'image'
 
-  initialize: (imageEditor) ->
+  initialize: (editor) ->
     super
+
+    @loaded = false
+    @image.hide().attr('src', editor.path)
 
     @image.load =>
       @originalHeight = @image.height()
       @originalWidth = @image.width()
       @loaded = true
       @centerImage()
-    @setPath(imageEditor?.path)
 
     @subscribe $(window), 'resize', _.debounce((=> @centerImage()), 300)
     @command 'image-view:zoom-in', => @zoomIn()
@@ -37,9 +36,7 @@ class ImageEditorView extends ScrollView
         @active = @is(pane.activeView)
         @centerImage() if @active and not wasActive
 
-  ### Public ###
-
-  # Places the image in the center of the {Editor}.
+  # Places the image in the center of the view.
   centerImage: ->
     return unless @loaded and @isVisible()
 
@@ -48,18 +45,7 @@ class ImageEditorView extends ScrollView
       'left': Math.max((@width() - @image.outerWidth()) / 2, 0)
     @image.show()
 
-  # Indicates the path of the image.
-  #
-  # path - A {String} for the new image path.
-  setPath: (path) ->
-    if path?
-      if @image.attr('src') isnt path
-        @loaded = false
-        @image.hide().attr('src', path)
-    else
-      @image.hide()
-
-  # Retrieve's the {Editor}'s pane.
+  # Retrieves this view's pane.
   #
   # Returns a {Pane}.
   getPane: ->
@@ -85,8 +71,7 @@ class ImageEditorView extends ScrollView
     @image.height(@originalHeight)
     @centerImage()
 
-  ### Internal ###
-
+  # Adjust the size of the image by the given multiplying factor.
   adjustSize: (factor) ->
     return unless @loaded and @isVisible()
 
@@ -95,6 +80,3 @@ class ImageEditorView extends ScrollView
     @image.width(newWidth)
     @image.height(newHeight)
     @centerImage()
-
-  setModel: (imageEditor) ->
-    @setPath(imageEditor?.path)
