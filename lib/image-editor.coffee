@@ -9,18 +9,21 @@ class ImageEditor extends Model
   Serializable.includeInto(this)
   atom.deserializers.add(this)
 
+  # Files with these extensions will be opened as images
+  @imageExtensions: ['.gif', '.ico', '.jpeg', '.jpg', '.png']
+
   @properties
     path: null
 
-  @behavior 'relativePath', ->
-    @$path.map (path) -> atom.project.relativize(path)
-
   @activate: ->
-    # Files with these extensions will be opened as images
-    imageExtensions = ['.gif', '.ico', '.jpeg', '.jpg', '.png']
-    atom.project.registerOpener (filePath) ->
-      if _.include(imageExtensions, path.extname(filePath))
-        new ImageEditor(path: filePath)
+    atom.project.registerOpener(@openUri)
+
+  @deactivate: ->
+    atom.project.unregisterOpener(@openUri)
+
+  @openUri: (uriToOpen) =>
+    if _.include(@imageExtensions, path.extname(uriToOpen))
+      new ImageEditor(path: uriToOpen)
 
   serializeParams: ->
     {@path}
@@ -48,7 +51,7 @@ class ImageEditor extends Model
   # Retrieves the URI of the current image.
   #
   # Returns a {String}.
-  getUri: -> @relativePath
+  getUri: -> @relativePath ?= atom.project.relativize(@path)
 
   # Compares two {ImageEditor}s to determine equality.
   #
