@@ -41,8 +41,8 @@ class ImageEditorView extends ScrollView
     return unless @loaded and @isVisible()
 
     @image.css
-      'top': Math.max((@height() - @image.outerHeight()) / 2, 0)
-      'left': Math.max((@width() - @image.outerWidth()) / 2, 0)
+      top: Math.max((@height() - @image.outerHeight()) / 2, 0)
+      left: Math.max((@width() - @image.outerWidth()) / 2, 0)
     @image.show()
 
   # Retrieves this view's pane.
