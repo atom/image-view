@@ -3,9 +3,7 @@ path = require 'path'
 Serializable = require 'serializable'
 {_, fs} = require 'atom'
 
-# Manages the states between {Editor}s, images, and the project as a whole.
-#
-# Essentially, the graphical version of a {EditSession}.
+# Editor model for an image file
 module.exports =
 class ImageEditor extends Model
   Serializable.includeInto(this)
@@ -52,7 +50,7 @@ class ImageEditor extends Model
   # Returns a {String}.
   getUri: -> @relativePath
 
-  # Compares two `ImageEditor`s to determine equality.
+  # Compares two {ImageEditor}s to determine equality.
   #
   # Equality is based on the condition that the two URIs are the same.
   #
