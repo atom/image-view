@@ -2,11 +2,11 @@ ImageEditorView = require '../lib/image-editor-view'
 ImageEditor = require '../lib/image-editor'
 
 describe "ImageEditorView", ->
-  [editor, view, path] = []
+  [editor, view, filePath] = []
 
   beforeEach ->
-    path = atom.project.resolve('binary-file.png')
-    editor = new ImageEditor({path})
+    filePath = atom.project.resolve('binary-file.png')
+    editor = new ImageEditor({path: filePath})
     view = new ImageEditorView(editor)
     view.attachToDom()
     view.height(100)
@@ -14,7 +14,7 @@ describe "ImageEditorView", ->
     waitsFor -> view.loaded
 
   it "displays the image for a path", ->
-    expect(view.image.attr('src')).toBe path
+    expect(view.image.attr('src')).toBe filePath
 
   it "centers the image in the editor", ->
     expect(view.image.width()).toBe 10
