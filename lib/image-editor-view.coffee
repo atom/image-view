@@ -1,7 +1,7 @@
 _ = require 'underscore-plus'
 {$, ScrollView} = require 'atom'
 
-# Renders the image in an {ImageEditor}.
+# View that renders the image of an {ImageEditor}.
 module.exports =
 class ImageEditorView extends ScrollView
   @content: ->
