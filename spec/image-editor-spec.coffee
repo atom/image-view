@@ -14,9 +14,12 @@ describe "ImageEditor", ->
 
   describe ".activate()", ->
     it "registers a project opener that handles image file extension", ->
-      atom.packages.activatePackage('image-view')
-      atom.workspaceView = new WorkspaceView()
-      atom.workspaceView.open(path.join(__dirname, 'fixtures', 'binary-file.png'))
+      waitsForPromise ->
+        atom.packages.activatePackage('image-view')
+
+      runs ->
+        atom.workspaceView = new WorkspaceView()
+        atom.workspaceView.open(path.join(__dirname, 'fixtures', 'binary-file.png'))
 
       waitsFor ->
         atom.workspaceView.getActivePaneItem() instanceof ImageEditor
