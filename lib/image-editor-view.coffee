@@ -51,15 +51,11 @@ class ImageEditorView extends ScrollView
   getPane: ->
     @parents('.pane').view()
 
-  # Zooms the image out.
-  #
-  # This is done by a factor of `0.9`.
+  # Zooms the image out by 10%.
   zoomOut: ->
     @adjustSize(0.9)
 
-  # Zooms the image in.
-  #
-  # This is done by a factor of `1.1`.
+  # Zooms the image in by 10%.
   zoomIn: ->
     @adjustSize(1.1)
 
