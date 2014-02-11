@@ -2,7 +2,7 @@
   "name": "image-view",
   "version": "0.19.0",
   "description": "View images in the editor",
-  "main": "./lib/image-editor",
+  "main": "./lib/main",
   "repository": "https://github.com/atom/image-view",
   "engines": {
     "atom": "*"

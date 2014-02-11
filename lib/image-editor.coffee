@@ -1,6 +1,5 @@
 path = require 'path'
 
-_ = require 'underscore-plus'
 fs = require 'fs-plus'
 {Model} = require 'theorist'
 Serializable = require 'serializable'
@@ -11,21 +10,8 @@ class ImageEditor extends Model
   Serializable.includeInto(this)
   atom.deserializers.add(this)
 
-  # Files with these extensions will be opened as images
-  @imageExtensions: ['.gif', '.ico', '.jpeg', '.jpg', '.png']
-
   @properties
     path: null
-
-  @activate: ->
-    atom.project.registerOpener(@openUri)
-
-  @deactivate: ->
-    atom.project.unregisterOpener(@openUri)
-
-  @openUri: (uriToOpen) =>
-    if _.include(@imageExtensions, path.extname(uriToOpen))
-      new ImageEditor(path: uriToOpen)
 
   serializeParams: ->
     {@path}
