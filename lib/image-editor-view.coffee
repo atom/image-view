@@ -72,6 +72,8 @@ class ImageEditorView extends ScrollView
     @centerImage()
 
   # Adjust the size of the image by the given multiplying factor.
+  #
+  # factor - A {Number} to multiply against the current size.
   adjustSize: (factor) ->
     return unless @loaded and @isVisible()
 
