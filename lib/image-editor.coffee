@@ -1,17 +1,15 @@
 path = require 'path'
 
 fs = require 'fs-plus'
-{Model} = require 'theorist'
 Serializable = require 'serializable'
 
 # Editor model for an image file
 module.exports =
-class ImageEditor extends Model
+class ImageEditor
   Serializable.includeInto(this)
   atom.deserializers.add(this)
 
-  @properties
-    path: null
+  constructor: ({@path}={}) ->
 
   serializeParams: ->
     {@path}
