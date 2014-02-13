@@ -6,7 +6,7 @@ describe "ImageEditorView", ->
 
   beforeEach ->
     filePath = atom.project.resolve('binary-file.png')
-    editor = new ImageEditor({path: filePath})
+    editor = new ImageEditor(filePath)
     view = new ImageEditorView(editor)
     view.attachToDom()
     view.height(100)

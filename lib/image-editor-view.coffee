@@ -13,7 +13,7 @@ class ImageEditorView extends ScrollView
     super
 
     @loaded = false
-    @image.hide().attr('src', editor.path)
+    @image.hide().attr('src', editor.getUri())
 
     @image.load =>
       @originalHeight = @image.height()

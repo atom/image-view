@@ -1,24 +1,21 @@
 path = require 'path'
-
 fs = require 'fs-plus'
-Serializable = require 'serializable'
 
 # Editor model for an image file
 module.exports =
 class ImageEditor
-  Serializable.includeInto(this)
   atom.deserializers.add(this)
 
-  constructor: ({@path}={}) ->
-
-  serializeParams: ->
-    {@path}
-
-  deserializeParams: (params) ->
-    if fs.isFileSync(params.path)
-      params
+  @deserialize: ({filePath}) ->
+    if fs.isFileSync(filePath)
+      new ImageEditor(filePath)
     else
-      console.warn "Could not deserialize image editor for path '#{params.path}' because that file no longer exists"
+      console.warn "Could not deserialize image editor for path '#{filePath}' because that file no longer exists"
+
+  constructor: (@filePath) ->
+
+  serialize: ->
+    {@filePath}
 
   getViewClass: ->
     require './image-editor-view'
@@ -29,15 +26,16 @@ class ImageEditor
   #
   # Returns a {String}.
   getTitle: ->
-    if @path?
-      path.basename(@path)
+    if @filePath?
+      path.basename(@filePath)
     else
       'untitled'
 
   # Retrieves the URI of the current image.
   #
   # Returns a {String}.
-  getUri: -> @relativePath ?= atom.project.relativize(@path)
+  getUri: ->
+    @filePath
 
   # Compares two {ImageEditor}s to determine equality.
   #
