@@ -1,5 +1,4 @@
 path = require 'path'
-
 fs = require 'fs-plus'
 Serializable = require 'serializable'
 
