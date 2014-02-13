@@ -14,4 +14,4 @@ imageExtensions = ['.gif', '.ico', '.jpeg', '.jpg', '.png']
 openUri = (uriToOpen) ->
   uriExtension = path.extname(uriToOpen)
   if _.include(imageExtensions, uriExtension)
-    new ImageEditor(path: uriToOpen)
+    new ImageEditor(uriToOpen)
