@@ -9,7 +9,7 @@ describe "ImageEditor", ->
       editor = new ImageEditor(path.join(__dirname, 'fixtures', 'binary-file.png'))
       state = editor.serialize()
       expect(ImageEditor.deserialize(state)).toBeDefined()
-      state.path = 'bogus'
+      state.filePath = 'bogus'
       expect(ImageEditor.deserialize(state)).toBeUndefined()
 
   describe ".activate()", ->
