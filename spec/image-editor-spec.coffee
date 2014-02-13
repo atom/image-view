@@ -31,8 +31,8 @@ describe "ImageEditor", ->
 
         atom.workspaceView.open(path.join(__dirname, 'fixtures', 'binary-file.png'))
 
-        waitsFor ->
-          atom.workspaceView.getActivePaneItem()?
+      waitsFor ->
+        atom.workspaceView.getActivePaneItem()?
 
-        runs ->
-          expect(atom.workspaceView.getActivePaneItem() instanceof ImageEditor).toBe false
+      runs ->
+        expect(atom.workspaceView.getActivePaneItem() instanceof ImageEditor).toBe false
