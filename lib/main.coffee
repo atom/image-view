@@ -4,10 +4,10 @@ ImageEditor = require './image-editor'
 
 module.exports =
   activate: ->
-    atom.project.registerOpener(openUri)
+    atom.workspace.registerOpener(openUri)
 
   deactivate: ->
-    atom.project.unregisterOpener(openUri)
+    atom.workspace.unregisterOpener(openUri)
 
 # Files with these extensions will be opened as images
 imageExtensions = ['.gif', '.ico', '.jpeg', '.jpg', '.png']
