@@ -37,7 +37,8 @@ class ImageEditor
   # Retrieves the URI of the current image.
   #
   # Returns a {String}.
-  getUri: -> @relativePath ?= atom.project.relativize(@path)
+  getUri: ->
+    @relativePath ?= atom.project.relativize(@path)
 
   # Compares two {ImageEditor}s to determine equality.
   #
