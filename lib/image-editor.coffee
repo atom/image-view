@@ -13,7 +13,6 @@ class ImageEditor
       console.warn "Could not deserialize image editor for path '#{filePath}' because that file no longer exists"
 
   constructor: (@filePath) ->
-    console.log @filePath
 
   serialize: ->
     {@filePath}
