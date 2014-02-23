@@ -15,7 +15,7 @@ class ImageEditor
   constructor: (@filePath) ->
 
   serialize: ->
-    {@filePath}
+    {@filePath, deserializer: @constructor.name}
 
   getViewClass: ->
     require './image-editor-view'
