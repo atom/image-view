@@ -4,6 +4,7 @@
   "description": "View images in the editor",
   "main": "./lib/main",
   "repository": "https://github.com/atom/image-view",
+  "license": "MIT",
   "engines": {
     "atom": "*"
   },
