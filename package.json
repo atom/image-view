@@ -1,7 +1,7 @@
 {
   "name": "image-view",
   "version": "0.24.0",
-  "description": "View images in the editor",
+  "description": "Open images in an editor",
   "main": "./lib/main",
   "repository": "https://github.com/atom/image-view",
   "license": "MIT",
