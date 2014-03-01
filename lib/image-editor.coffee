@@ -31,10 +31,16 @@ class ImageEditor
     else
       'untitled'
 
-  # Retrieves the URI of the current image.
+  # Retrieves the URI of the image.
   #
   # Returns a {String}.
   getUri: ->
+    @filePath
+
+  # Retrieves the absolute path to the image.
+  #
+  # Returns a {String} path.
+  getPath: ->
     @filePath
 
   # Compares two {ImageEditor}s to determine equality.
