@@ -12,6 +12,6 @@ module.exports =
 # Files with these extensions will be opened as images
 imageExtensions = ['.gif', '.ico', '.jpeg', '.jpg', '.png']
 openUri = (uriToOpen) ->
-  uriExtension = path.extname(uriToOpen)
+  uriExtension = path.extname(uriToOpen).toLowerCase()
   if _.include(imageExtensions, uriExtension)
     new ImageEditor(uriToOpen)
