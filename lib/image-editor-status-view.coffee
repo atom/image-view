@@ -29,4 +29,4 @@ class ImageEditorStatusView extends View
   getImageSize: =>
     imageWidth = @image.width()
     imageHeight = @image.height()
-    @imageSizeStatus.text("#{imageWidth} px x #{imageHeight} px").show()
+    @imageSizeStatus.text("#{imageWidth}px x #{imageHeight}px").show()
