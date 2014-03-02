@@ -1,10 +1,24 @@
+{WorkspaceView, View} = require 'atom'
+ImageEditorStatusView = require '../lib/image-editor-status-view'
 ImageEditorView = require '../lib/image-editor-view'
 ImageEditor = require '../lib/image-editor'
+
+class StatusBarMock extends View
+  @content: ->
+    @div class: 'status-bar tool-panel panel-bottom', =>
+      @div outlet: 'leftPanel', class: 'status-bar-left'
+
+  attach: ->
+    atom.workspaceView.appendToTop(this)
+
+  appendLeft: (item) ->
+    @leftPanel.append(item)
 
 describe "ImageEditorView", ->
   [editor, view, filePath] = []
 
   beforeEach ->
+    atom.workspaceView = new WorkspaceView
     filePath = atom.project.resolve('binary-file.png')
     editor = new ImageEditor(filePath)
     view = new ImageEditorView(editor)
@@ -42,3 +56,21 @@ describe "ImageEditorView", ->
       view.trigger 'image-view:reset-zoom'
       expect(view.image.width()).toBe 10
       expect(view.image.height()).toBe 10
+
+  describe "ImageEditorStatusView", ->
+    [imageSizeStatus] = []
+
+    beforeEach ->
+      atom.workspaceView.statusBar = new StatusBarMock()
+      atom.workspaceView.statusBar.attach()
+      imageEditorStatusView = new ImageEditorStatusView(editor.getPath(), view.image)
+
+      imageSizeStatus = atom.workspaceView.statusBar.leftPanel.children().view()
+      expect(imageSizeStatus).toExist()
+
+    afterEach ->
+      atom.workspaceView.statusBar.remove()
+      atom.workspaceView.statusBar = null
+
+    it "displays the size of the image", ->
+      expect(imageSizeStatus.text()).toBe '10px x 10px'
