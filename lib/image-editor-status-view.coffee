@@ -20,6 +20,9 @@ class ImageEditorStatusView extends View
         else
           @imageSizeStatus.parent().hide()
 
+      @subscribe atom.workspaceView, 'pane:before-item-destroyed', =>
+        @detach()
+
   attach: =>
     statusBar = atom.workspaceView.statusBar
     if statusBar
