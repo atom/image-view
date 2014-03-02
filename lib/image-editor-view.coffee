@@ -21,7 +21,7 @@ class ImageEditorView extends ScrollView
       @originalWidth = @image.width()
       @loaded = true
       @centerImage()
-      @imageEditorStatusView = new ImageEditorStatusView(editor.getUri(), @image)
+      @imageEditorStatusView = new ImageEditorStatusView(editor.getPath(), @image)
 
     @subscribe $(window), 'resize', _.debounce((=> @centerImage()), 300)
     @command 'image-view:zoom-in', => @zoomIn()
