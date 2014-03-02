@@ -7,7 +7,7 @@ class ImageEditorStatusView extends View
     @div class: 'status-image inline-block', =>
       @span class: 'image-size', outlet: 'imageSizeStatus'
 
-  initialize: (filePath, image) =>
+  initialize: (filePath, image) ->
     @filePath = filePath
     @image = image
     if @filePath and @image
@@ -23,13 +23,13 @@ class ImageEditorStatusView extends View
       @subscribe atom.workspaceView, 'pane:before-item-destroyed', =>
         @detach()
 
-  attach: =>
+  attach: ->
     statusBar = atom.workspaceView.statusBar
     if statusBar
       statusBar.appendLeft this
       @getImageSize()
 
-  getImageSize: =>
+  getImageSize: ->
     imageWidth = @image.width()
     imageHeight = @image.height()
     @imageSizeStatus.text("#{imageWidth}px x #{imageHeight}px").show()
