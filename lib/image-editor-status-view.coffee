@@ -21,7 +21,9 @@ class ImageEditorStatusView extends View
           @imageSizeStatus.parent().hide()
 
       @subscribe atom.workspaceView, 'pane:before-item-destroyed', =>
-        @detach()
+        editor = atom.workspaceView.getActivePaneItem()
+        if editor instanceof ImageEditor and @filePath is editor.filePath
+          @detach()
 
   attach: ->
     statusBar = atom.workspaceView.statusBar
