@@ -23,7 +23,7 @@ class ImageEditorStatusView extends View
   getImageSize: (view) ->
     imageWidth = view.originalWidth
     imageHeight = view.originalHeight
-    @imageSizeStatus.text("#{imageWidth}px x #{imageHeight}px").show()
+    @imageSizeStatus.text("#{imageWidth}x#{imageHeight}").show()
 
   updateImageSize: ->
     editor = atom.workspaceView.getActivePaneItem()
