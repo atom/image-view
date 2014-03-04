@@ -20,18 +20,19 @@ class ImageEditorStatusView extends View
   afterAttach: ->
     @updateImageSize()
 
+  getImageSize: (view) ->
+    imageWidth = view.originalWidth
+    imageHeight = view.originalHeight
+    @imageSizeStatus.text("#{imageWidth}px x #{imageHeight}px").show()
+
   updateImageSize: ->
     editor = atom.workspaceView.getActivePaneItem()
     if editor instanceof ImageEditor
       view = atom.workspaceView.getActiveView()
       if view.loaded
-        imageWidth = view.originalWidth
-        imageHeight = view.originalHeight
-        @imageSizeStatus.text("#{imageWidth}px x #{imageHeight}px").show()
+        @getImageSize(view)
       else # wait for image to load before getting originalWidth and originalHeight
         view.image.load =>
-          imageWidth = view.originalWidth
-          imageHeight = view.originalHeight
-          @imageSizeStatus.text("#{imageWidth}px x #{imageHeight}px").show()
+          @getImageSize(view)
     else
       @imageSizeStatus.hide()
