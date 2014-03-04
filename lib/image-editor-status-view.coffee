@@ -28,7 +28,8 @@ class ImageEditorStatusView extends View
       view = atom.workspaceView.getActiveView()
       if view.loaded
         @getImageSize(view)
-      else # wait for image to load before getting originalWidth and originalHeight
+      else
+        # Wait for image to load before getting originalWidth and originalHeight
         view.image.load =>
           # Make sure view is still active since load is async
           @getImageSize(view) if view is atom.workspaceView.getActiveView()
