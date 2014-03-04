@@ -61,7 +61,6 @@ describe "ImageEditorView", ->
 
     beforeEach ->
       atom.workspaceView.attachToDom()
-      filePath = atom.project.resolve('binary-file.png')
 
       waitsForPromise ->
         atom.packages.activatePackage('image-view')
