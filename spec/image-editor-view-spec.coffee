@@ -60,9 +60,7 @@ describe "ImageEditorView", ->
     [imageSizeStatus] = []
 
     beforeEach ->
-      atom.workspaceView = new WorkspaceView
       atom.workspaceView.attachToDom()
-      filePath = atom.project.resolve('binary-file.png')
 
       waitsForPromise ->
         atom.packages.activatePackage('image-view')
@@ -89,4 +87,4 @@ describe "ImageEditorView", ->
       atom.workspaceView.statusBar = null
 
     it "displays the size of the image", ->
-      expect(imageSizeStatus.text()).toBe '10px x 10px'
+      expect(imageSizeStatus.text()).toBe '10x10'
