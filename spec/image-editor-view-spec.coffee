@@ -60,7 +60,6 @@ describe "ImageEditorView", ->
     [imageSizeStatus] = []
 
     beforeEach ->
-      atom.workspaceView = new WorkspaceView
       atom.workspaceView.attachToDom()
       filePath = atom.project.resolve('binary-file.png')
 
