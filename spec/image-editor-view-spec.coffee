@@ -88,4 +88,4 @@ describe "ImageEditorView", ->
       atom.workspaceView.statusBar = null
 
     it "displays the size of the image", ->
-      expect(imageSizeStatus.text()).toBe '10px x 10px'
+      expect(imageSizeStatus.text()).toBe '10x10'
