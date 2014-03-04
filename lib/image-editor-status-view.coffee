@@ -1,4 +1,3 @@
-_ = require 'underscore-plus'
 {View} = require 'atom'
 ImageEditor = require './image-editor'
 
