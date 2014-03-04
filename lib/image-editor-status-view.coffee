@@ -1,3 +1,4 @@
+_ = require 'underscore-plus'
 {View} = require 'atom'
 ImageEditor = require './image-editor'
 
@@ -7,31 +8,30 @@ class ImageEditorStatusView extends View
     @div class: 'status-image inline-block', =>
       @span class: 'image-size', outlet: 'imageSizeStatus'
 
-  initialize: (filePath, image) ->
-    @filePath = filePath
-    @image = image
-    if @filePath and @image
-      @attach()
+  initialize: (@statusBar) ->
+    @attach()
 
-      @subscribe atom.workspaceView, 'pane-container:active-pane-item-changed', =>
-        editor = atom.workspaceView.getActivePaneItem()
-        if editor instanceof ImageEditor and @filePath is editor.filePath
-          @imageSizeStatus.parent().show()
-        else
-          @imageSizeStatus.parent().hide()
-
-      @subscribe atom.workspaceView, 'pane:before-item-destroyed', =>
-        editor = atom.workspaceView.getActivePaneItem()
-        if editor instanceof ImageEditor and @filePath is editor.filePath
-          @detach()
+    @subscribe atom.workspaceView, 'pane-container:active-pane-item-changed', =>
+      @updateImageSize()
 
   attach: ->
-    statusBar = atom.workspaceView.statusBar
-    if statusBar
-      statusBar.appendLeft this
-      @getImageSize()
+    @statusBar.appendLeft this
 
-  getImageSize: ->
-    imageWidth = @image.width()
-    imageHeight = @image.height()
-    @imageSizeStatus.text("#{imageWidth}px x #{imageHeight}px").show()
+  afterAttach: ->
+    @updateImageSize()
+
+  updateImageSize: ->
+    editor = atom.workspaceView.getActivePaneItem()
+    if editor instanceof ImageEditor
+      view = atom.workspaceView.getActiveView()
+      if view.loaded
+        imageWidth = view.originalWidth
+        imageHeight = view.originalHeight
+        @imageSizeStatus.text("#{imageWidth}px x #{imageHeight}px").show()
+      else # wait for image to load before getting originalWidth and originalHeight
+        view.image.load =>
+          imageWidth = view.originalWidth
+          imageHeight = view.originalHeight
+          @imageSizeStatus.text("#{imageWidth}px x #{imageHeight}px").show()
+    else
+      @imageSizeStatus.hide()

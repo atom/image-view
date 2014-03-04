@@ -1,5 +1,4 @@
 {WorkspaceView, View} = require 'atom'
-ImageEditorStatusView = require '../lib/image-editor-status-view'
 ImageEditorView = require '../lib/image-editor-view'
 ImageEditor = require '../lib/image-editor'
 
@@ -63,7 +62,7 @@ describe "ImageEditorView", ->
     beforeEach ->
       atom.workspaceView.statusBar = new StatusBarMock()
       atom.workspaceView.statusBar.attach()
-      imageEditorStatusView = new ImageEditorStatusView(editor.getPath(), view.image)
+      atom.packages.emit('activated')
 
       imageSizeStatus = atom.workspaceView.statusBar.leftPanel.children().view()
       expect(imageSizeStatus).toExist()

@@ -1,6 +1,5 @@
 _ = require 'underscore-plus'
 {$, ScrollView} = require 'atom'
-ImageEditorStatusView = require './image-editor-status-view'
 
 # View that renders the image of an {ImageEditor}.
 module.exports =
@@ -21,7 +20,6 @@ class ImageEditorView extends ScrollView
       @originalWidth = @image.width()
       @loaded = true
       @centerImage()
-      @imageEditorStatusView = new ImageEditorStatusView(editor.getPath(), @image)
 
     @subscribe $(window), 'resize', _.debounce((=> @centerImage()), 300)
     @command 'image-view:zoom-in', => @zoomIn()
