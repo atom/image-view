@@ -60,6 +60,23 @@ describe "ImageEditorView", ->
     [imageSizeStatus] = []
 
     beforeEach ->
+      atom.workspaceView = new WorkspaceView
+      atom.workspaceView.attachToDom()
+      filePath = atom.project.resolve('binary-file.png')
+
+      waitsForPromise ->
+        atom.packages.activatePackage('image-view')
+
+      waitsForPromise ->
+        atom.workspaceView.open(filePath)
+
+      runs ->
+        editor = atom.workspaceView.getActivePaneItem()
+        view = atom.workspaceView.getActiveView()
+        view.height(100)
+
+      waitsFor -> view.loaded
+
       atom.workspaceView.statusBar = new StatusBarMock()
       atom.workspaceView.statusBar.attach()
       atom.packages.emit('activated')
