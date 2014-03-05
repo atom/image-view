@@ -35,6 +35,8 @@ class ImageEditorView extends ScrollView
         wasActive = @active
         @active = @is(pane.activeView)
         @centerImage() if @active and not wasActive
+      @subscribe atom.workspaceView, 'pane:attached pane:removed', =>
+        @centerImage()
 
   # Places the image in the center of the view.
   centerImage: ->
