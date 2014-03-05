@@ -36,6 +36,7 @@ class ImageEditorView extends ScrollView
         @active = @is(pane.activeView)
         @centerImage() if @active and not wasActive
       @subscribe pane, 'pane:became-inactive', => @centerImage()
+      @subscribe pane, 'pane:became-active', _.debounce((=> @centerImage()), 300)
 
   # Places the image in the center of the view.
   centerImage: ->
