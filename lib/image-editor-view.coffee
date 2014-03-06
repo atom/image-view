@@ -31,10 +31,12 @@ class ImageEditorView extends ScrollView
 
     if pane = @getPane()
       @active = @is(pane.activeView)
+
       @subscribe pane, 'pane:active-item-changed', (event, item) =>
         wasActive = @active
         @active = @is(pane.activeView)
         @centerImage() if @active and not wasActive
+
       @subscribe atom.workspaceView, 'pane:attached pane:removed', =>
         @centerImage()
 
