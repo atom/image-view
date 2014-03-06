@@ -1,5 +1,6 @@
 path = require 'path'
 ImageEditor = require '../lib/image-editor'
+ImageEditorView = require '../lib/image-editor-view'
 {WorkspaceView} = require 'atom'
 
 describe "ImageEditor", ->
@@ -39,3 +40,26 @@ describe "ImageEditor", ->
 
       runs ->
         expect(atom.workspaceView.getActivePaneItem() instanceof ImageEditor).toBe false
+
+  describe "when a pane is added or removed", ->
+    it "recenters the image", ->
+      atom.workspaceView = new WorkspaceView()
+      atom.workspace = atom.workspaceView.model
+      atom.workspaceView.attachToDom()
+      filepath = path.join(__dirname, 'fixtures', 'binary-file.png')
+
+      spyOn(ImageEditorView.prototype, "centerImage")
+
+      waitsForPromise ->
+        atom.packages.activatePackage('image-view')
+
+      waitsForPromise ->
+        atom.workspace.open(filepath)
+
+      runs ->
+        expect(ImageEditorView.prototype.centerImage).not.toHaveBeenCalled()
+        rightPane = atom.workspace.getActivePane().splitRight()
+        expect(ImageEditorView.prototype.centerImage).toHaveBeenCalled()
+        ImageEditorView.prototype.centerImage.reset()
+        rightPane.destroy()
+        expect(ImageEditorView.prototype.centerImage).toHaveBeenCalled()
