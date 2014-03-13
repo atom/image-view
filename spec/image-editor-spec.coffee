@@ -46,8 +46,9 @@ describe "ImageEditor", ->
       atom.workspaceView = new WorkspaceView()
       atom.workspace = atom.workspaceView.model
       atom.workspaceView.attachToDom()
-      filepath = path.join(__dirname, 'fixtures', 'binary-file.png')
 
+      filepath = path.join(__dirname, 'fixtures', 'binary-file.png')
+      rightPane = null
       spyOn(ImageEditorView.prototype, "centerImage")
 
       waitsForPromise ->
@@ -58,8 +59,15 @@ describe "ImageEditor", ->
 
       runs ->
         expect(ImageEditorView.prototype.centerImage).not.toHaveBeenCalled()
+        ImageEditorView.prototype.centerImage.reset()
         rightPane = atom.workspace.getActivePane().splitRight()
-        expect(ImageEditorView.prototype.centerImage).toHaveBeenCalled()
+
+      waitsFor ->
+        ImageEditorView.prototype.centerImage.callCount > 0
+
+      runs ->
         ImageEditorView.prototype.centerImage.reset()
         rightPane.destroy()
-        expect(ImageEditorView.prototype.centerImage).toHaveBeenCalled()
+
+      waitsFor ->
+        ImageEditorView.prototype.centerImage.callCount > 0
