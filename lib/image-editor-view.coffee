@@ -44,9 +44,12 @@ class ImageEditorView extends ScrollView
   centerImage: ->
     return unless @loaded and @isVisible()
 
+    padding = parseInt(atom.config.get('image-view.padding'), 10) || 0
+
     @image.css
-      top: Math.max((@height() - @image.outerHeight()) / 2, 0)
-      left: Math.max((@width() - @image.outerWidth()) / 2, 0)
+      padding: Math.max(padding, 0)
+      top: Math.max((@height() - @image.height() - (padding * 2)) / 2, 0)
+      left: Math.max((@width() - @image.width() - (padding * 2)) / 2, 0)
     @image.show()
 
   # Retrieves this view's pane.

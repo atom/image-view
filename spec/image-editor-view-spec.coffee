@@ -23,6 +23,7 @@ describe "ImageEditorView", ->
     view = new ImageEditorView(editor)
     view.attachToDom()
     view.height(100)
+    atom.config.set('image-view.padding', 25)
 
     waitsFor -> view.loaded
 

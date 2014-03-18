@@ -3,6 +3,9 @@ _ = require 'underscore-plus'
 ImageEditor = require './image-editor'
 
 module.exports =
+  configDefaults:
+    padding: 25
+
   activate: ->
     atom.workspace.registerOpener(openUri)
     atom.packages.once('activated', createImageStatusView)
