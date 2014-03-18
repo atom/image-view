@@ -58,7 +58,6 @@ describe "ImageEditor", ->
         atom.workspace.open(filepath)
 
       runs ->
-        expect(ImageEditorView.prototype.centerImage).not.toHaveBeenCalled()
         ImageEditorView.prototype.centerImage.reset()
         rightPane = atom.workspace.getActivePane().splitRight()
 
