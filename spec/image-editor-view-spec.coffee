@@ -69,7 +69,7 @@ describe "ImageEditorView", ->
         atom.workspaceView.open(filePath)
 
       runs ->
-        editor = atom.workspaceView.getActivePaneItem()
+        editor = atom.workspace.getActivePaneItem()
         view = atom.workspaceView.getActiveView()
         view.height(100)
 

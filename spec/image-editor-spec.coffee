@@ -26,20 +26,20 @@ describe "ImageEditor", ->
         atom.workspaceView.open(path.join(__dirname, 'fixtures', 'binary-file.png'))
 
       waitsFor ->
-        atom.workspaceView.getActivePaneItem() instanceof ImageEditor
+        atom.workspace.getActivePaneItem() instanceof ImageEditor
 
       runs ->
-        expect(atom.workspaceView.getActivePaneItem().getTitle()).toBe 'binary-file.png'
+        expect(atom.workspace.getActivePaneItem().getTitle()).toBe 'binary-file.png'
         atom.workspaceView.destroyActivePaneItem()
         atom.packages.deactivatePackage('image-view')
 
         atom.workspaceView.open(path.join(__dirname, 'fixtures', 'binary-file.png'))
 
       waitsFor ->
-        atom.workspaceView.getActivePaneItem()?
+        atom.workspace.getActivePaneItem()?
 
       runs ->
-        expect(atom.workspaceView.getActivePaneItem() instanceof ImageEditor).toBe false
+        expect(atom.workspace.getActivePaneItem() instanceof ImageEditor).toBe false
 
   describe "when a pane is added or removed", ->
     it "recenters the image", ->
