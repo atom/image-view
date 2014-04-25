@@ -1,4 +1,4 @@
-# Image View package
+# Image View package [![Build Status](https://travis-ci.org/atom/image-view.svg?branch=master)](https://travis-ci.org/atom/image-view)
 
 Open images in an editor in Atom. Support zooming via `cmd-+`, `cmd--`, and
 `cmd-0`.
