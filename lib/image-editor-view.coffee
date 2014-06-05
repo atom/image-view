@@ -7,9 +7,9 @@ class ImageEditorView extends ScrollView
   @content: ->
     @div class: 'image-view', tabindex: -1, =>
       @div class: 'image-controls', outlet: 'imageControls', =>
-        @a class: 'image-controls-color--white', value: '#fff', =>
+        @a class: 'image-controls-color-white', value: '#fff', =>
           @text 'white'
-        @a class: 'image-controls-color--black', value: '#000', =>
+        @a class: 'image-controls-color-black', value: '#000', =>
           @text 'black'
       @div class: 'image-container', =>
         @img outlet: 'image'
