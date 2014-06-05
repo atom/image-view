@@ -6,6 +6,11 @@ module.exports =
 class ImageEditorView extends ScrollView
   @content: ->
     @div class: 'image-view', tabindex: -1, =>
+      @div class: 'image-controls', outlet: 'imageControls', =>
+        @a class: 'image-controls-color--white', value: '#fff', =>
+          @text 'white'
+        @a class: 'image-controls-color--black', value: '#000', =>
+          @text 'black'
       @div class: 'image-container', =>
         @img outlet: 'image'
 
@@ -39,6 +44,9 @@ class ImageEditorView extends ScrollView
 
       @subscribe atom.workspaceView, 'pane:attached pane:removed', =>
         @centerImage()
+
+      @imageControls.find('a').on 'click', (e) =>
+        @changeBackground $(e.target).attr 'value'
 
   # Places the image in the center of the view.
   centerImage: ->
@@ -82,3 +90,10 @@ class ImageEditorView extends ScrollView
     @image.width(newWidth)
     @image.height(newHeight)
     @centerImage()
+
+  # Changes the background color of the image view.
+  #
+  # color - A {String} that is a valid CSS hex color.
+  changeBackground: (color) ->
+    return unless @loaded and @isVisible and color
+    @image.css 'background-color', color
