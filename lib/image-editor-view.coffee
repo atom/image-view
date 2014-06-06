@@ -49,8 +49,8 @@ class ImageEditorView extends ScrollView
       @imageControls.find('a').on 'click', (e) =>
         @changeBackground $(e.target).attr 'value'
 
-      _extension = path.extname(@image.attr 'src')
-      if _extension is '.jpg' or _extension is '.jpeg'
+      # Hide controls for jpg and jpeg images as they don't have transparency
+      if path.extname(@image.attr 'src').toLowerCase() in ['.jpg', '.jpeg']
         @imageControls.addClass 'hide-controls'
 
   # Places the image in the center of the view.
