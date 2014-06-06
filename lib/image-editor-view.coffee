@@ -1,4 +1,5 @@
 _ = require 'underscore-plus'
+path = require 'path'
 {$, ScrollView} = require 'atom'
 
 # View that renders the image of an {ImageEditor}.
@@ -6,6 +7,11 @@ module.exports =
 class ImageEditorView extends ScrollView
   @content: ->
     @div class: 'image-view', tabindex: -1, =>
+      @div class: 'image-controls', outlet: 'imageControls', =>
+        @a class: 'image-controls-color-white', value: '#fff', =>
+          @text 'white'
+        @a class: 'image-controls-color-black', value: '#000', =>
+          @text 'black'
       @div class: 'image-container', =>
         @img outlet: 'image'
 
@@ -39,6 +45,13 @@ class ImageEditorView extends ScrollView
 
       @subscribe atom.workspaceView, 'pane:attached pane:removed', =>
         @centerImage()
+
+      @imageControls.find('a').on 'click', (e) =>
+        @changeBackground $(e.target).attr 'value'
+
+      # Hide controls for jpg and jpeg images as they don't have transparency
+      if path.extname(@image.attr 'src').toLowerCase() in ['.jpg', '.jpeg']
+        @imageControls.addClass 'hide-controls'
 
   # Places the image in the center of the view.
   centerImage: ->
@@ -82,3 +95,11 @@ class ImageEditorView extends ScrollView
     @image.width(newWidth)
     @image.height(newHeight)
     @centerImage()
+
+  # Changes the background color of the image view.
+  #
+  # color - A {String} that is a valid CSS hex color.
+  changeBackground: (color) ->
+    return unless @loaded and @isVisible and color
+    # TODO: in the future, probably validate the color
+    @image.css 'background-color', color
