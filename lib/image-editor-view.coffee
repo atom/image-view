@@ -51,7 +51,7 @@ class ImageEditorView extends ScrollView
 
       # Hide controls for jpg and jpeg images as they don't have transparency
       if path.extname(@image.attr 'src').toLowerCase() in ['.jpg', '.jpeg']
-        @imageControls.addClass 'hide-controls'
+        @imageControls.hide()
 
   # Places the image in the center of the view.
   centerImage: ->
