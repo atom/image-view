@@ -100,6 +100,6 @@ class ImageEditorView extends ScrollView
   #
   # color - A {String} that is a valid CSS hex color.
   changeBackground: (color) ->
-    return unless @loaded and @isVisible and color
+    return unless @loaded and @isVisible() and color
     # TODO: in the future, probably validate the color
     @image.css 'background-color', color
