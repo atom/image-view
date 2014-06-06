@@ -1,4 +1,5 @@
 _ = require 'underscore-plus'
+path = require 'path'
 {$, ScrollView} = require 'atom'
 
 # View that renders the image of an {ImageEditor}.
@@ -47,6 +48,10 @@ class ImageEditorView extends ScrollView
 
       @imageControls.find('a').on 'click', (e) =>
         @changeBackground $(e.target).attr 'value'
+
+      _extension = path.extname(@image.attr 'src')
+      if _extension is '.jpg' or _extension is '.jpeg'
+        @imageControls.addClass 'hide-controls'
 
   # Places the image in the center of the view.
   centerImage: ->
