@@ -29,12 +29,6 @@ describe "ImageEditorView", ->
   it "displays the image for a path", ->
     expect(view.image.attr('src')).toBe filePath
 
-  it "centers the image in the editor", ->
-    expect(view.image.width()).toBe 10
-    expect(view.image.height()).toBe 10
-    expect(view.image.css('left')).toBe "#{(view.width() - view.image.outerWidth()) / 2}px"
-    expect(view.image.css('top')).toBe "#{(view.height() - view.image.outerHeight()) / 2}px"
-
   describe "image-view:zoom-in", ->
     it "increases the image size by 10%", ->
       view.trigger 'image-view:zoom-in'
