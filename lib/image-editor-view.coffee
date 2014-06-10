@@ -36,16 +36,6 @@ class ImageEditorView extends ScrollView
     return unless onDom
 
     if pane = @getPane()
-      @active = @is(pane.activeView)
-
-      @subscribe pane, 'pane:active-item-changed', (event, item) =>
-        wasActive = @active
-        @active = @is(pane.activeView)
-        @image.show() if @active and not wasActive
-
-      @subscribe atom.workspaceView, 'pane:attached pane:removed', =>
-        @image.show()
-
       @imageControls.find('a').on 'click', (e) =>
         @changeBackground $(e.target).attr 'value'
 
@@ -73,7 +63,6 @@ class ImageEditorView extends ScrollView
 
     @image.width(@originalWidth)
     @image.height(@originalHeight)
-    @image.show()
 
   # Adjust the size of the image by the given multiplying factor.
   #
@@ -85,7 +74,6 @@ class ImageEditorView extends ScrollView
     newHeight = @image.height() * factor
     @image.width(newWidth)
     @image.height(newHeight)
-    @image.show()
 
   # Changes the background color of the image view.
   #
