@@ -13,7 +13,8 @@ class ImageEditorView extends ScrollView
         @a class: 'image-controls-color-black', value: '#000', =>
           @text 'black'
       @div class: 'image-container', =>
-        @img outlet: 'image'
+        @div class: 'image-container-cell', =>
+          @img outlet: 'image'
 
   initialize: (editor) ->
     super
@@ -25,9 +26,8 @@ class ImageEditorView extends ScrollView
       @originalHeight = @image.height()
       @originalWidth = @image.width()
       @loaded = true
-      @centerImage()
+      @image.show()
 
-    @subscribe $(window), 'resize', _.debounce((=> @centerImage()), 300)
     @command 'image-view:zoom-in', => @zoomIn()
     @command 'image-view:zoom-out', => @zoomOut()
     @command 'image-view:reset-zoom', => @resetZoom()
@@ -41,10 +41,10 @@ class ImageEditorView extends ScrollView
       @subscribe pane, 'pane:active-item-changed', (event, item) =>
         wasActive = @active
         @active = @is(pane.activeView)
-        @centerImage() if @active and not wasActive
+        @image.show() if @active and not wasActive
 
       @subscribe atom.workspaceView, 'pane:attached pane:removed', =>
-        @centerImage()
+        @image.show()
 
       @imageControls.find('a').on 'click', (e) =>
         @changeBackground $(e.target).attr 'value'
@@ -52,15 +52,6 @@ class ImageEditorView extends ScrollView
       # Hide controls for jpg and jpeg images as they don't have transparency
       if path.extname(@image.attr 'src').toLowerCase() in ['.jpg', '.jpeg']
         @imageControls.hide()
-
-  # Places the image in the center of the view.
-  centerImage: ->
-    return unless @loaded and @isVisible()
-
-    @image.css
-      top: Math.max((@height() - @image.outerHeight()) / 2, 0)
-      left: Math.max((@width() - @image.outerWidth()) / 2, 0)
-    @image.show()
 
   # Retrieves this view's pane.
   #
@@ -82,7 +73,7 @@ class ImageEditorView extends ScrollView
 
     @image.width(@originalWidth)
     @image.height(@originalHeight)
-    @centerImage()
+    @image.show()
 
   # Adjust the size of the image by the given multiplying factor.
   #
@@ -94,7 +85,7 @@ class ImageEditorView extends ScrollView
     newHeight = @image.height() * factor
     @image.width(newWidth)
     @image.height(newHeight)
-    @centerImage()
+    @image.show()
 
   # Changes the background color of the image view.
   #

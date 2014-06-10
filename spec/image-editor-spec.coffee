@@ -40,33 +40,3 @@ describe "ImageEditor", ->
 
       runs ->
         expect(atom.workspace.getActivePaneItem() instanceof ImageEditor).toBe false
-
-  describe "when a pane is added or removed", ->
-    it "recenters the image", ->
-      atom.workspaceView = new WorkspaceView()
-      atom.workspace = atom.workspaceView.model
-      atom.workspaceView.attachToDom()
-
-      filepath = path.join(__dirname, 'fixtures', 'binary-file.png')
-      rightPane = null
-      spyOn(ImageEditorView.prototype, "centerImage")
-
-      waitsForPromise ->
-        atom.packages.activatePackage('image-view')
-
-      waitsForPromise ->
-        atom.workspace.open(filepath)
-
-      runs ->
-        ImageEditorView.prototype.centerImage.reset()
-        rightPane = atom.workspace.getActivePane().splitRight()
-
-      waitsFor ->
-        ImageEditorView.prototype.centerImage.callCount > 0
-
-      runs ->
-        ImageEditorView.prototype.centerImage.reset()
-        rightPane.destroy()
-
-      waitsFor ->
-        ImageEditorView.prototype.centerImage.callCount > 0
