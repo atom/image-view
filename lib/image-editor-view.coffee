@@ -8,9 +8,9 @@ class ImageEditorView extends ScrollView
   @content: ->
     @div class: 'image-view', tabindex: -1, =>
       @div class: 'image-controls', outlet: 'imageControls', =>
-        @a class: 'image-controls-color-white', value: '#fff', =>
+        @a outlet: 'whiteTransparentBackgroundButton', class: 'image-controls-color-white', value: '#fff', =>
           @text 'white'
-        @a class: 'image-controls-color-black', value: '#000', =>
+        @a outlet: 'blackTransparentBackgroundButton', class: 'image-controls-color-black', value: '#000', =>
           @text 'black'
       @div class: 'image-container', =>
         @div class: 'image-container-cell', =>
@@ -31,6 +31,9 @@ class ImageEditorView extends ScrollView
     @command 'image-view:zoom-in', => @zoomIn()
     @command 'image-view:zoom-out', => @zoomOut()
     @command 'image-view:reset-zoom', => @resetZoom()
+
+    @whiteTransparentBackgroundButton.setTooltip("Use white transparent background")
+    @blackTransparentBackgroundButton.setTooltip("Use black transparent background")
 
   afterAttach: (onDom) ->
     return unless onDom
