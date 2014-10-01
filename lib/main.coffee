@@ -18,7 +18,7 @@ createImageStatusView = ->
     view.attach()
 
 # Files with these extensions will be opened as images
-imageExtensions = ['.gif', '.ico', '.jpeg', '.jpg', '.png']
+imageExtensions = ['.gif', '.ico', '.jpeg', '.jpg', '.png', '.webp']
 openUri = (uriToOpen) ->
   uriExtension = path.extname(uriToOpen).toLowerCase()
   if _.include(imageExtensions, uriExtension)
