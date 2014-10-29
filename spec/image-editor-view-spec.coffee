@@ -27,7 +27,7 @@ describe "ImageEditorView", ->
     waitsFor -> view.loaded
 
   it "displays the image for a path", ->
-    expect(view.image.attr('src')).toBe filePath
+    expect(view.image.attr('src')).toContain filePath
 
   describe "image-view:zoom-in", ->
     it "increases the image size by 10%", ->
