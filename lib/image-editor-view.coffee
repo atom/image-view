@@ -16,11 +16,11 @@ class ImageEditorView extends ScrollView
         @div class: 'image-container-cell', =>
           @img outlet: 'image'
 
-  initialize: (editor) ->
+  initialize: (@editor) ->
     super
 
     @loaded = false
-    @image.hide().attr('src', editor.getUri())
+    @image.hide().attr('src', "#{@editor.getUri()}?time=#{Date.now()}")
 
     @image.load =>
       @originalHeight = @image.height()
@@ -43,7 +43,7 @@ class ImageEditorView extends ScrollView
         @changeBackground $(e.target).attr 'value'
 
       # Hide controls for jpg and jpeg images as they don't have transparency
-      if path.extname(@image.attr 'src').toLowerCase() in ['.jpg', '.jpeg']
+      if path.extname(@editor.getPath()).toLowerCase() in ['.jpg', '.jpeg']
         @imageControls.hide()
 
   # Retrieves this view's pane.
