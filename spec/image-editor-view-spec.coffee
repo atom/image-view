@@ -26,6 +26,10 @@ describe "ImageEditorView", ->
 
     waitsFor -> view.loaded
 
+  afterEach ->
+    editor.destroy()
+    view.remove()
+
   it "displays the image for a path", ->
     expect(view.image.attr('src')).toContain filePath
 

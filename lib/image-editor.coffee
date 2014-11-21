@@ -16,6 +16,7 @@ class ImageEditor
 
   constructor: (filePath) ->
     @file = new File(filePath)
+    @subscriptions = new CompositeDisposable()
 
   serialize: ->
     {filePath: @getPath(), deserializer: @constructor.name}
@@ -25,11 +26,18 @@ class ImageEditor
 
   # Register a callback for when the image file changes
   onDidChange: (callback) ->
-    @file.onDidChange(callback)
+    changeSubscription = @file.onDidChange(callback)
+    @subscriptions.add(changeSubscription)
+    changeSubscription
 
   # Register a callback for whne the image's title changes
   onDidChangeTitle: (callback) ->
-    @file.onDidRename(callback)
+    renameSubscription = @file.onDidRename(callback)
+    @subscriptions.add(renameSubscription)
+    renameSubscription
+
+  destroy: ->
+    @subscriptions.dispose()
 
   # Retrieves the filename of the open file.
   #
