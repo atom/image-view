@@ -29,6 +29,20 @@ describe "ImageEditorView", ->
   it "displays the image for a path", ->
     expect(view.image.attr('src')).toContain filePath
 
+  describe "when the image is changed", ->
+    it "reloads the image", ->
+      spyOn(view, 'updateImageUri')
+      editor.file.emitter.emit('did-change')
+      expect(view.updateImageUri).toHaveBeenCalled()
+
+  describe "when the image is moved", ->
+    it "updates the title", ->
+      titleHandler = jasmine.createSpy('titleHandler')
+      editor.onDidChangeTitle(titleHandler)
+      editor.file.emitter.emit('did-rename')
+
+      expect(titleHandler).toHaveBeenCalled()
+
   describe "image-view:zoom-in", ->
     it "increases the image size by 10%", ->
       view.trigger 'image-view:zoom-in'

@@ -20,13 +20,17 @@ class ImageEditorView extends ScrollView
     super
 
     @loaded = false
-    @image.hide().attr('src', "#{@editor.getUri()}?time=#{Date.now()}")
+    @image.hide()
+    @updateImageUri()
+
+    @subscribe @editor.onDidChange => @updateImageUri()
 
     @image.load =>
       @originalHeight = @image.height()
       @originalWidth = @image.width()
       @loaded = true
       @image.show()
+      @trigger 'image-view:loaded'
 
     @command 'image-view:zoom-in', => @zoomIn()
     @command 'image-view:zoom-out', => @zoomOut()
@@ -45,6 +49,9 @@ class ImageEditorView extends ScrollView
       # Hide controls for jpg and jpeg images as they don't have transparency
       if path.extname(@editor.getPath()).toLowerCase() in ['.jpg', '.jpeg']
         @imageControls.hide()
+
+  updateImageUri: ->
+    @image.attr('src', "#{@editor.getUri()}?time=#{Date.now()}")
 
   # Retrieves this view's pane.
   #

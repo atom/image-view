@@ -23,15 +23,14 @@ class ImageEditorStatusView extends View
     @imageSizeStatus.text("#{originalWidth}x#{originalHeight}").show()
 
   updateImageSize: ->
+    @unsubscribe(@editorView) if @editorView?
+
     editor = atom.workspace.getActivePaneItem()
     if editor instanceof ImageEditor
-      view = atom.workspaceView.getActiveView()
-      if view.loaded
-        @getImageSize(view)
-      else
-        # Wait for image to load before getting originalWidth and originalHeight
-        view.image.load =>
-          # Make sure view is still active since load is async
-          @getImageSize(view) if view is atom.workspaceView.getActiveView()
+      @editorView = atom.workspaceView.getActiveView()
+      @getImageSize(@editorView) if @editorView.loaded
+      @subscribe @editorView, 'image-view:loaded', =>
+        if @editorView is atom.workspaceView.getActiveView()
+          @getImageSize(@editorView)
     else
       @imageSizeStatus.hide()
