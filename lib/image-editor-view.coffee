@@ -24,6 +24,7 @@ class ImageEditorView extends ScrollView
     @updateImageUri()
 
     @subscribe @editor.onDidChange => @updateImageUri()
+    @subscribeToCommand this, 'image-view:reload', => @updateImageUri()
 
     @image.load =>
       @originalHeight = @image.height()

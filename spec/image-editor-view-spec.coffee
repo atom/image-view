@@ -43,6 +43,12 @@ describe "ImageEditorView", ->
 
       expect(titleHandler).toHaveBeenCalled()
 
+  describe "when image-view:reload is triggered", ->
+    it "reloads the image", ->
+      spyOn(view, 'updateImageUri')
+      view.trigger 'image-view:reload'
+      expect(view.updateImageUri).toHaveBeenCalled()
+
   describe "image-view:zoom-in", ->
     it "increases the image size by 10%", ->
       view.trigger 'image-view:zoom-in'
