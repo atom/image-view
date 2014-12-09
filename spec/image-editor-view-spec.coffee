@@ -1,4 +1,5 @@
-{WorkspaceView, View} = require 'atom'
+{WorkspaceView} = require 'atom'
+{View} = require 'atom-space-pen-views'
 ImageEditorView = require '../lib/image-editor-view'
 ImageEditor = require '../lib/image-editor'
 
@@ -21,7 +22,7 @@ describe "ImageEditorView", ->
     filePath = atom.project.resolve('binary-file.png')
     editor = new ImageEditor(filePath)
     view = new ImageEditorView(editor)
-    view.attachToDom()
+    jasmine.attachToDOM(view.element)
     view.height(100)
 
     waitsFor -> view.loaded
@@ -47,30 +48,30 @@ describe "ImageEditorView", ->
 
       expect(titleHandler).toHaveBeenCalled()
 
-  describe "when image-view:reload is triggered", ->
+  describe "image-view:reload", ->
     it "reloads the image", ->
       spyOn(view, 'updateImageUri')
-      view.trigger 'image-view:reload'
+      atom.commands.dispatch view[0], 'image-view:reload'
       expect(view.updateImageUri).toHaveBeenCalled()
 
   describe "image-view:zoom-in", ->
     it "increases the image size by 10%", ->
-      view.trigger 'image-view:zoom-in'
+      atom.commands.dispatch view.element, 'image-view:zoom-in'
       expect(view.image.width()).toBe 11
       expect(view.image.height()).toBe 11
 
   describe "image-view:zoom-out", ->
     it "decreases the image size by 10%", ->
-      view.trigger 'image-view:zoom-out'
+      atom.commands.dispatch view.element, 'image-view:zoom-out'
       expect(view.image.width()).toBe 9
       expect(view.image.height()).toBe 9
 
   describe "image-view:reset-zoom", ->
     it "restores the image to the original size", ->
-      view.trigger 'image-view:zoom-in'
+      atom.commands.dispatch view.element, 'image-view:zoom-in'
       expect(view.image.width()).not.toBe 10
       expect(view.image.height()).not.toBe 10
-      view.trigger 'image-view:reset-zoom'
+      atom.commands.dispatch view.element, 'image-view:reset-zoom'
       expect(view.image.width()).toBe 10
       expect(view.image.height()).toBe 10
 
@@ -93,12 +94,13 @@ describe "ImageEditorView", ->
 
       waitsFor -> view.loaded
 
-      atom.workspaceView.statusBar = new StatusBarMock()
-      atom.workspaceView.statusBar.attach()
-      atom.packages.emitter.emit('did-activate-all')
+      runs ->
+        atom.workspaceView.statusBar = new StatusBarMock()
+        atom.workspaceView.statusBar.attach()
+        atom.packages.emitter.emit('did-activate-all')
 
-      imageSizeStatus = atom.workspaceView.statusBar.leftPanel.children().view()
-      expect(imageSizeStatus).toExist()
+        imageSizeStatus = atom.workspaceView.statusBar.leftPanel.children().view()
+        expect(imageSizeStatus).toExist()
 
     afterEach ->
       atom.workspaceView.statusBar.remove()
