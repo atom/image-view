@@ -95,7 +95,7 @@ describe "ImageEditorView", ->
 
       atom.workspaceView.statusBar = new StatusBarMock()
       atom.workspaceView.statusBar.attach()
-      atom.packages.emit('activated')
+      atom.packages.emitter.emit('did-activate-all')
 
       imageSizeStatus = atom.workspaceView.statusBar.leftPanel.children().view()
       expect(imageSizeStatus).toExist()

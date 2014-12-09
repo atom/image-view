@@ -5,7 +5,9 @@ ImageEditor = require './image-editor'
 module.exports =
   activate: ->
     @openerDisposable = atom.workspace.addOpener(openUri)
-    atom.packages.once('activated', createImageStatusView)
+    activateDisposable = atom.packages.onDidActivateAll ->
+      activateDisposable.dispose()
+      createImageStatusView()
 
   deactivate: ->
     @openerDisposable.dispose()
