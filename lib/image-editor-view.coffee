@@ -1,6 +1,7 @@
 _ = require 'underscore-plus'
 path = require 'path'
-{$, ScrollView} = require 'atom'
+{$, ScrollView} = require 'atom-space-pen-views'
+{Emitter, CompositeDisposable} = require 'atom'
 
 # View that renders the image of an {ImageEditor}.
 module.exports =
@@ -18,30 +19,31 @@ class ImageEditorView extends ScrollView
 
   initialize: (@editor) ->
     super
+    @emitter = new Emitter
+
+  attached: ->
+    @disposables = new CompositeDisposable
 
     @loaded = false
     @image.hide()
     @updateImageUri()
 
-    @subscribe @editor.onDidChange => @updateImageUri()
-    @subscribeToCommand this, 'image-view:reload', => @updateImageUri()
+    @disposables.add @editor.onDidChange => @updateImageUri()
+    @disposables.add atom.commands.add @element,
+      'image-view:reload': => @updateImageUri()
+      'image-view:zoom-in': => @zoomIn()
+      'image-view:zoom-out': => @zoomOut()
+      'image-view:reset-zoom': => @resetZoom()
 
     @image.load =>
       @originalHeight = @image.height()
       @originalWidth = @image.width()
       @loaded = true
       @image.show()
-      @trigger 'image-view:loaded'
+      @emitter.emit 'did-load'
 
-    @command 'image-view:zoom-in', => @zoomIn()
-    @command 'image-view:zoom-out', => @zoomOut()
-    @command 'image-view:reset-zoom', => @resetZoom()
-
-    @whiteTransparentBackgroundButton.setTooltip("Use white transparent background")
-    @blackTransparentBackgroundButton.setTooltip("Use black transparent background")
-
-  afterAttach: (onDom) ->
-    return unless onDom
+    @disposables.add atom.tooltips.add @whiteTransparentBackgroundButton[0], title: "Use white transparent background"
+    @disposables.add atom.tooltips.add @blackTransparentBackgroundButton[0], title: "Use black transparent background"
 
     if pane = @getPane()
       @imageControls.find('a').on 'click', (e) =>
@@ -50,6 +52,12 @@ class ImageEditorView extends ScrollView
       # Hide controls for jpg and jpeg images as they don't have transparency
       if path.extname(@editor.getPath()).toLowerCase() in ['.jpg', '.jpeg']
         @imageControls.hide()
+
+  onDidLoad: (callback) ->
+    @emitter.on 'did-load', callback
+
+  detached: ->
+    @disposables.dispose()
 
   updateImageUri: ->
     @image.attr('src', "#{@editor.getUri()}?time=#{Date.now()}")

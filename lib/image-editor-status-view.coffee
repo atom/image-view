@@ -1,4 +1,5 @@
-{View} = require 'atom'
+{$, View} = require 'atom-space-pen-views'
+{CompositeDisposable} = require 'atom'
 ImageEditor = require './image-editor'
 
 module.exports =
@@ -8,29 +9,29 @@ class ImageEditorStatusView extends View
       @span class: 'image-size', outlet: 'imageSizeStatus'
 
   initialize: (@statusBar) ->
+    @disposables = new CompositeDisposable
     @attach()
 
-    @subscribe atom.workspaceView, 'pane-container:active-pane-item-changed', =>
-      @updateImageSize()
+    @disposables.add atom.workspace.onDidChangeActivePaneItem => @updateImageSize()
 
   attach: ->
     @statusBar.appendLeft this
 
-  afterAttach: ->
+  attached: ->
     @updateImageSize()
 
   getImageSize: ({originalHeight, originalWidth}) ->
     @imageSizeStatus.text("#{originalWidth}x#{originalHeight}").show()
 
   updateImageSize: ->
-    @unsubscribe(@editorView) if @editorView?
+    @imageLoadDisposable?.dispose()
 
     editor = atom.workspace.getActivePaneItem()
     if editor instanceof ImageEditor
-      @editorView = atom.workspaceView.getActiveView()
+      @editorView = $(atom.views.getView(editor)).view()
       @getImageSize(@editorView) if @editorView.loaded
-      @subscribe @editorView, 'image-view:loaded', =>
-        if @editorView is atom.workspaceView.getActiveView()
+      @imageLoadDisposable = @editorView.onDidLoad =>
+        if editor is atom.workspace.getActivePaneItem()
           @getImageSize(@editorView)
     else
       @imageSizeStatus.hide()

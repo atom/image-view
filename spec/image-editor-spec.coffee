@@ -1,7 +1,6 @@
 path = require 'path'
 ImageEditor = require '../lib/image-editor'
 ImageEditorView = require '../lib/image-editor-view'
-{WorkspaceView} = require 'atom'
 
 describe "ImageEditor", ->
   describe ".deserialize(state)", ->
@@ -15,25 +14,21 @@ describe "ImageEditor", ->
 
   describe ".activate()", ->
     it "registers a project opener that handles image file extension", ->
-      atom.workspaceView = new WorkspaceView()
-      atom.workspace = atom.workspaceView.model
-
       waitsForPromise ->
         atom.packages.activatePackage('image-view')
 
       runs ->
-        atom.workspaceView = new WorkspaceView()
-        atom.workspaceView.open(path.join(__dirname, 'fixtures', 'binary-file.png'))
+        atom.workspace.open(path.join(__dirname, 'fixtures', 'binary-file.png'))
 
       waitsFor ->
         atom.workspace.getActivePaneItem() instanceof ImageEditor
 
       runs ->
         expect(atom.workspace.getActivePaneItem().getTitle()).toBe 'binary-file.png'
-        atom.workspaceView.destroyActivePaneItem()
+        atom.workspace.destroyActivePaneItem()
         atom.packages.deactivatePackage('image-view')
 
-        atom.workspaceView.open(path.join(__dirname, 'fixtures', 'binary-file.png'))
+        atom.workspace.open(path.join(__dirname, 'fixtures', 'binary-file.png'))
 
       waitsFor ->
         atom.workspace.getActivePaneItem()?

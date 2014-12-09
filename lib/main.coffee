@@ -4,14 +4,16 @@ ImageEditor = require './image-editor'
 
 module.exports =
   activate: ->
-    atom.workspace.registerOpener(openUri)
-    atom.packages.once('activated', createImageStatusView)
+    @openerDisposable = atom.workspace.addOpener(openUri)
+    activateDisposable = atom.packages.onDidActivateAll ->
+      activateDisposable.dispose()
+      createImageStatusView()
 
   deactivate: ->
-    atom.workspace.unregisterOpener(openUri)
+    @openerDisposable.dispose()
 
 createImageStatusView = ->
-  {statusBar} = atom.workspaceView
+  statusBar = atom.views.getView(atom.workspace).querySelector 'status-bar'
   if statusBar?
     ImageEditorStatusView = require './image-editor-status-view'
     view = new ImageEditorStatusView(statusBar)

@@ -9,8 +9,9 @@
     "atom": "*"
   },
   "dependencies": {
+    "atom-space-pen-views": "^0.20.0",
     "fs-plus": "2.x",
-    "underscore-plus": "1.x",
-    "pathwatcher": "^2.3.2"
+    "pathwatcher": "^2.3.2",
+    "underscore-plus": "1.x"
   }
 }
