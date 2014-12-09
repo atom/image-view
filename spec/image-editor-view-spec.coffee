@@ -67,6 +67,7 @@ describe "ImageEditorView", ->
     [imageSizeStatus] = []
 
     beforeEach ->
+      view.detach()
       jasmine.attachToDOM(workspaceElement)
 
       waitsForPromise ->
