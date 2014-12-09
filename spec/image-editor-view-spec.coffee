@@ -39,7 +39,7 @@ describe "ImageEditorView", ->
   describe "image-view:reload", ->
     it "reloads the image", ->
       spyOn(view, 'updateImageUri')
-      atom.commands.dispatch view[0], 'image-view:reload'
+      atom.commands.dispatch view.element, 'image-view:reload'
       expect(view.updateImageUri).toHaveBeenCalled()
 
   describe "image-view:zoom-in", ->
