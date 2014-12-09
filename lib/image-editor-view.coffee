@@ -41,7 +41,6 @@ class ImageEditorView extends ScrollView
       @loaded = true
       @image.show()
       @emitter.emit 'did-load'
-      @trigger 'image-view:loaded'
 
     @disposables.add atom.tooltips.add @whiteTransparentBackgroundButton[0], title: "Use white transparent background"
     @disposables.add atom.tooltips.add @blackTransparentBackgroundButton[0], title: "Use black transparent background"
