@@ -13,7 +13,7 @@ module.exports =
     @openerDisposable.dispose()
 
 createImageStatusView = ->
-  {statusBar} = atom.workspaceView
+  statusBar = atom.views.getView(atom.workspace).querySelector 'status-bar'
   if statusBar?
     ImageEditorStatusView = require './image-editor-status-view'
     view = new ImageEditorStatusView(statusBar)

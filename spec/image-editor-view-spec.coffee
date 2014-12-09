@@ -1,29 +1,17 @@
-{WorkspaceView} = require 'atom'
-{View} = require 'atom-space-pen-views'
+{View, $} = require 'atom-space-pen-views'
 ImageEditorView = require '../lib/image-editor-view'
 ImageEditor = require '../lib/image-editor'
 
-class StatusBarMock extends View
-  @content: ->
-    @div class: 'status-bar tool-panel panel-bottom', =>
-      @div outlet: 'leftPanel', class: 'status-bar-left'
-
-  attach: ->
-    atom.workspaceView.appendToTop(this)
-
-  appendLeft: (item) ->
-    @leftPanel.append(item)
-
 describe "ImageEditorView", ->
-  [editor, view, filePath] = []
+  [editor, view, filePath, workspaceElement] = []
 
   beforeEach ->
-    atom.workspaceView = new WorkspaceView
+    workspaceElement = atom.views.getView(atom.workspace)
     filePath = atom.project.resolve('binary-file.png')
     editor = new ImageEditor(filePath)
     view = new ImageEditorView(editor)
-    jasmine.attachToDOM(view.element)
     view.height(100)
+    jasmine.attachToDOM(view.element)
 
     waitsFor -> view.loaded
 
@@ -79,32 +67,29 @@ describe "ImageEditorView", ->
     [imageSizeStatus] = []
 
     beforeEach ->
-      atom.workspaceView.attachToDom()
+      jasmine.attachToDOM(workspaceElement)
 
       waitsForPromise ->
         atom.packages.activatePackage('image-view')
 
       waitsForPromise ->
-        atom.workspaceView.open(filePath)
+        atom.workspace.open(filePath)
 
       runs ->
         editor = atom.workspace.getActivePaneItem()
-        view = atom.workspaceView.getActiveView()
+        view = $(atom.views.getView(atom.workspace.getActivePaneItem())).view()
         view.height(100)
 
       waitsFor -> view.loaded
 
+      waitsForPromise ->
+        atom.packages.activatePackage('status-bar')
+
       runs ->
-        atom.workspaceView.statusBar = new StatusBarMock()
-        atom.workspaceView.statusBar.attach()
         atom.packages.emitter.emit('did-activate-all')
-
-        imageSizeStatus = atom.workspaceView.statusBar.leftPanel.children().view()
+        statusBar = workspaceElement.querySelector('status-bar')
+        imageSizeStatus = $(statusBar.leftPanel.querySelector('.status-image')).view()
         expect(imageSizeStatus).toExist()
-
-    afterEach ->
-      atom.workspaceView.statusBar.remove()
-      atom.workspaceView.statusBar = null
 
     it "displays the size of the image", ->
       expect(imageSizeStatus.text()).toBe '10x10'
