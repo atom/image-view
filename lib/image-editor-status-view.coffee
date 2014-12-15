@@ -15,7 +15,7 @@ class ImageEditorStatusView extends View
     @disposables.add atom.workspace.onDidChangeActivePaneItem => @updateImageSize()
 
   attach: ->
-    @statusBar.appendLeft this
+    @statusBar.addLeftTile(item: this)
 
   attached: ->
     @updateImageSize()
