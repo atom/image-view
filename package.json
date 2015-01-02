@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "atom-space-pen-views": "^0.20.0",
-    "fs-plus": "2.x",
+    "fs-plus": "^2.0.0",
     "pathwatcher": "^2.3.2",
-    "underscore-plus": "1.x"
+    "underscore-plus": "^1.0.0"
   }
 }
