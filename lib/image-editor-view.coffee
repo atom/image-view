@@ -45,7 +45,7 @@ class ImageEditorView extends ScrollView
     @disposables.add atom.tooltips.add @whiteTransparentBackgroundButton[0], title: "Use white transparent background"
     @disposables.add atom.tooltips.add @blackTransparentBackgroundButton[0], title: "Use black transparent background"
 
-    if pane = @getPane()
+    if @getPane()
       @imageControls.find('a').on 'click', (e) =>
         @changeBackground $(e.target).attr 'value'
 
@@ -66,7 +66,7 @@ class ImageEditorView extends ScrollView
   #
   # Returns a {Pane}.
   getPane: ->
-    @parents('.pane').view()
+    @parents('.pane')[0]
 
   # Zooms the image out by 10%.
   zoomOut: ->
