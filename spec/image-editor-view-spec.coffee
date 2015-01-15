@@ -7,7 +7,7 @@ describe "ImageEditorView", ->
 
   beforeEach ->
     workspaceElement = atom.views.getView(atom.workspace)
-    filePath = atom.project.resolve('binary-file.png')
+    filePath = atom.project.getDirectories()[0].resolve('binary-file.png')
     editor = new ImageEditor(filePath)
     view = new ImageEditorView(editor)
     view.height(100)
@@ -24,9 +24,9 @@ describe "ImageEditorView", ->
 
   describe "when the image is changed", ->
     it "reloads the image", ->
-      spyOn(view, 'updateImageUri')
+      spyOn(view, 'updateImageURI')
       editor.file.emitter.emit('did-change')
-      expect(view.updateImageUri).toHaveBeenCalled()
+      expect(view.updateImageURI).toHaveBeenCalled()
 
   describe "when the image is moved", ->
     it "updates the title", ->
@@ -38,9 +38,9 @@ describe "ImageEditorView", ->
 
   describe "image-view:reload", ->
     it "reloads the image", ->
-      spyOn(view, 'updateImageUri')
+      spyOn(view, 'updateImageURI')
       atom.commands.dispatch view.element, 'image-view:reload'
-      expect(view.updateImageUri).toHaveBeenCalled()
+      expect(view.updateImageURI).toHaveBeenCalled()
 
   describe "image-view:zoom-in", ->
     it "increases the image size by 10%", ->

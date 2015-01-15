@@ -26,11 +26,11 @@ class ImageEditorView extends ScrollView
 
     @loaded = false
     @image.hide()
-    @updateImageUri()
+    @updateImageURI()
 
-    @disposables.add @editor.onDidChange => @updateImageUri()
+    @disposables.add @editor.onDidChange => @updateImageURI()
     @disposables.add atom.commands.add @element,
-      'image-view:reload': => @updateImageUri()
+      'image-view:reload': => @updateImageURI()
       'image-view:zoom-in': => @zoomIn()
       'image-view:zoom-out': => @zoomOut()
       'image-view:reset-zoom': => @resetZoom()
@@ -59,8 +59,8 @@ class ImageEditorView extends ScrollView
   detached: ->
     @disposables.dispose()
 
-  updateImageUri: ->
-    @image.attr('src', "#{@editor.getUri()}?time=#{Date.now()}")
+  updateImageURI: ->
+    @image.attr('src', "#{@editor.getURI()}?time=#{Date.now()}")
 
   # Retrieves this view's pane.
   #

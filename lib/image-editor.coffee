@@ -53,7 +53,7 @@ class ImageEditor
   # Retrieves the URI of the image.
   #
   # Returns a {String}.
-  getUri: -> @getPath()
+  getURI: -> @getPath()
 
   # Retrieves the absolute path to the image.
   #
@@ -66,4 +66,4 @@ class ImageEditor
   #
   # Returns a {Boolean}.
   isEqual: (other) ->
-    other instanceof ImageEditor and @getUri() is other.getUri()
+    other instanceof ImageEditor and @getURI() is other.getURI()
