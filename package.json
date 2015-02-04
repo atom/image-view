@@ -13,5 +13,12 @@
     "fs-plus": "^2.0.0",
     "pathwatcher": "^3.0.0",
     "underscore-plus": "^1.0.0"
+  },
+  "consumedServices": {
+    "status-bar": {
+      "versions": {
+        "^0.58.0": "consumeStatusBar"
+      }
+    }
   }
 }
