@@ -87,7 +87,6 @@ describe "ImageEditorView", ->
         atom.packages.activatePackage('status-bar')
 
       runs ->
-        atom.packages.emitter.emit('did-activate-all')
         statusBar = workspaceElement.querySelector('status-bar')
         imageSizeStatus = $(statusBar.leftPanel.querySelector('.status-image')).view()
         expect(imageSizeStatus).toExist()
