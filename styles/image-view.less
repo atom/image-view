@@ -1,40 +1,33 @@
+@import "ui-variables";
+
+@spacing: @component-padding/2;
+
 .image-view {
-  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  background-color: @pane-item-background-color;
 
   .image-controls {
-    background: none;
-    position: absolute;
-    top: 3px;
-    left: 3px;
+    padding: @spacing;
+    border-bottom: 1px solid @panel-heading-border-color;
+    background-color: @panel-heading-background-color;
 
     a {
+      display: inline-block;
+      position: relative;
       width: 20px;
       height: 20px;
+      margin: @spacing;
+      vertical-align: middle;
       font-size: 0;
-      margin: 2px;
-      vertical-align: top;
-      border-radius: 2px;
+      border-radius: @component-border-radius;
       box-shadow: 0 1px 1px rgba(0, 0, 0, .3), 0 1px rgba(0, 0, 0, .6);
-      position: relative;
-      overflow: hidden;
-      display: inline-block;
+      backface-visibility: hidden;
+      background-image: url(atom://image-view/images/transparent-background.png);
+      transition: transform .1s;
 
-      -webkit-transition: -webkit-transform .1s;
-      -webkit-transform-style: preserve-3d;
-      -webkit-backface-visibility: hidden;
-
-      &:hover { -webkit-transform: scale(1.09); }
-      &:active { -webkit-transform: scale(.96); }
-
-      &:after {
-        content: '';
-        background: url(atom://image-view/images/transparent-background.png);
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-      }
+      &:hover { transform: scale(1.09); }
+      &:active { transform: scale(.96); }
     }
 
     &-color-white {
@@ -49,24 +42,17 @@
   }
 
   .image-container {
-    height: 100%;
-    width: 100%;
-    padding: 10px;
-    display: table;
+    flex: 1;
+    display: flex;
+    overflow: auto;
   }
 
   .image-container-cell {
-    text-align: center;
-    display: table-cell;
-    vertical-align: middle;
+    margin: auto;
   }
 
   img {
-    box-sizing: content-box;
-    border: 1px solid #FFF;
     background: #fff url(atom://image-view/images/transparent-background.png) right bottom;
-    box-shadow: #999 0 0 0 1px;
-    position: relative;
-    max-width: none;
+    //image-rendering: pixelated;
   }
 }
