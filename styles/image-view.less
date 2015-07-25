@@ -1,6 +1,7 @@
 @import "ui-variables";
 
 @spacing: @component-padding/2;
+@transparent-background-image: "atom://image-view/images/transparent-background.png";
 
 .image-view {
   display: flex;
@@ -20,10 +21,11 @@
       margin: @spacing;
       vertical-align: middle;
       font-size: 0;
-      border-radius: @component-border-radius;
-      box-shadow: 0 1px 1px rgba(0, 0, 0, .3), 0 1px rgba(0, 0, 0, .6);
+      border-radius: @component-border-radius * 2;
+      border: 1px solid @text-color-subtle;
+      box-shadow: inset 0 1px 2px hsla(0,0%,100%,.1), 0 1px 2px hsla(0,0%,0%,.2);
+      background-clip: content-box;
       backface-visibility: hidden;
-      background-image: url(atom://image-view/images/transparent-background.png);
       transition: transform .1s;
 
       &:hover { transform: scale(1.09); }
@@ -31,13 +33,15 @@
     }
 
     &-color-white {
-      background-color: #fff;
       color: #000;
+      background-color: #fff;
+      background-image: url(@transparent-background-image);
     }
 
     &-color-black {
-      background-color: #000;
       color: #fff;
+      background-color: #000;
+      background-image: url(@transparent-background-image);
     }
   }
 
@@ -52,7 +56,15 @@
   }
 
   img {
-    background: #fff url(atom://image-view/images/transparent-background.png) right bottom;
     //image-rendering: pixelated;
+    background-position: right bottom;
+    &.white {
+      background-color: white;
+      background-image: url(@transparent-background-image);
+    }
+    &.black {
+      background-color: black;
+      background-image: url(@transparent-background-image);
+    }
   }
 }

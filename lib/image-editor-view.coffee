@@ -9,9 +9,11 @@ class ImageEditorView extends ScrollView
   @content: ->
     @div class: 'image-view', tabindex: -1, =>
       @div class: 'image-controls', outlet: 'imageControls', =>
-        @a outlet: 'whiteTransparentBackgroundButton', class: 'image-controls-color-white', value: '#fff', =>
+        @a outlet: 'transparentBackgroundButton', class: 'image-controls-color-transparent', value: 'transparent', =>
+          @text 'transparent'
+        @a outlet: 'whiteTransparentBackgroundButton', class: 'image-controls-color-white', value: 'white', =>
           @text 'white'
-        @a outlet: 'blackTransparentBackgroundButton', class: 'image-controls-color-black', value: '#000', =>
+        @a outlet: 'blackTransparentBackgroundButton', class: 'image-controls-color-black', value: 'black', =>
           @text 'black'
       @div class: 'image-container', =>
         @div class: 'image-container-cell', =>
@@ -42,6 +44,7 @@ class ImageEditorView extends ScrollView
       @image.show()
       @emitter.emit 'did-load'
 
+    @disposables.add atom.tooltips.add @transparentBackgroundButton[0], title: "Use transparent background"
     @disposables.add atom.tooltips.add @whiteTransparentBackgroundButton[0], title: "Use white transparent background"
     @disposables.add atom.tooltips.add @blackTransparentBackgroundButton[0], title: "Use black transparent background"
 
@@ -96,8 +99,7 @@ class ImageEditorView extends ScrollView
 
   # Changes the background color of the image view.
   #
-  # color - A {String} that is a valid CSS hex color.
+  # color - A {String} that gets used as class name.
   changeBackground: (color) ->
     return unless @loaded and @isVisible() and color
-    # TODO: in the future, probably validate the color
-    @image.css 'background-color', color
+    @image.attr('class', color)
