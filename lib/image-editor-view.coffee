@@ -100,6 +100,9 @@ class ImageEditorView extends ScrollView
   adjustSize: (factor) ->
     return unless @loaded and @isVisible()
 
+    if @mode is 'zoom-to-fit'
+      @manualZoom()
+
     newWidth = @image.width() * factor
     newHeight = @image.height() * factor
     @image.width(newWidth)
