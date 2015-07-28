@@ -8,6 +8,9 @@
   flex-direction: column;
   background-color: @pane-item-background-color;
 
+
+  // Image Controls -------------------
+
   .image-controls {
     padding: @spacing;
     border-bottom: 1px solid @panel-heading-border-color;
@@ -45,6 +48,9 @@
     }
   }
 
+
+  // Image -------------------
+
   .image-container {
     flex: 1;
     display: flex;
@@ -67,4 +73,23 @@
       background-image: url(@transparent-background-image);
     }
   }
+
+
+  // Zoom to fit -------------------
+  // Scales the image to fit the available space.
+
+  .zoom-to-fit {
+    &.image-container {
+      cursor: zoom-in;
+      padding: @component-padding;
+    }
+    .image-container-cell {
+      display: flex;
+      margin: 0 auto;
+    }
+    img {
+      object-fit: contain;
+    }
+  }
+
 }

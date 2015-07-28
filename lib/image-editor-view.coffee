@@ -9,13 +9,11 @@ class ImageEditorView extends ScrollView
   @content: ->
     @div class: 'image-view', tabindex: -1, =>
       @div class: 'image-controls', outlet: 'imageControls', =>
-        @a outlet: 'transparentBackgroundButton', class: 'image-controls-color-transparent', value: 'transparent', =>
-          @text 'transparent'
         @a outlet: 'whiteTransparentBackgroundButton', class: 'image-controls-color-white', value: 'white', =>
           @text 'white'
         @a outlet: 'blackTransparentBackgroundButton', class: 'image-controls-color-black', value: 'black', =>
           @text 'black'
-      @div class: 'image-container', =>
+      @div class: 'image-container zoom-to-fit', outlet: 'imageContainer', =>
         @div class: 'image-container-cell', =>
           @img outlet: 'image'
 
@@ -27,6 +25,7 @@ class ImageEditorView extends ScrollView
     @disposables = new CompositeDisposable
 
     @loaded = false
+    @mode = 'zoom-to-fit'
     @image.hide()
     @updateImageURI()
 
@@ -37,6 +36,9 @@ class ImageEditorView extends ScrollView
       'image-view:zoom-out': => @zoomOut()
       'image-view:reset-zoom': => @resetZoom()
 
+    @imageContainer.on 'click', =>
+      @manualZoom()
+
     @image.load =>
       @originalHeight = @image.height()
       @originalWidth = @image.width()
@@ -44,17 +46,13 @@ class ImageEditorView extends ScrollView
       @image.show()
       @emitter.emit 'did-load'
 
-    @disposables.add atom.tooltips.add @transparentBackgroundButton[0], title: "Use transparent background"
     @disposables.add atom.tooltips.add @whiteTransparentBackgroundButton[0], title: "Use white transparent background"
     @disposables.add atom.tooltips.add @blackTransparentBackgroundButton[0], title: "Use black transparent background"
 
     if @getPane()
       @imageControls.find('a').on 'click', (e) =>
         @changeBackground $(e.target).attr 'value'
-
-      # Hide controls for jpg and jpeg images as they don't have transparency
-      if path.extname(@editor.getPath()).toLowerCase() in ['.jpg', '.jpeg']
-        @imageControls.hide()
+      @imageControls.hide()
 
   onDidLoad: (callback) ->
     @emitter.on 'did-load', callback
@@ -70,6 +68,16 @@ class ImageEditorView extends ScrollView
   # Returns a {Pane}.
   getPane: ->
     @parents('.pane')[0]
+
+  # Switch to manual zoom mode
+  manualZoom: ->
+    @mode = 'manual-zoom'
+    @imageContainer.removeClass 'zoom-to-fit'
+
+    # Show controls except for jpg and jpeg images as they don't have transparency
+    if path.extname(@editor.getPath()).toLowerCase() not in ['.jpg', '.jpeg']
+      @changeBackground('white')
+      @imageControls.show()
 
   # Zooms the image out by 10%.
   zoomOut: ->
