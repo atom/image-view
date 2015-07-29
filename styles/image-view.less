@@ -19,20 +19,22 @@
     a {
       display: inline-block;
       position: relative;
-      width: 20px;
-      height: 20px;
+      width: 24px;
+      height: 24px;
       margin: @spacing;
       vertical-align: middle;
       font-size: 0;
-      border-radius: @component-border-radius * 2;
-      border: 1px solid @text-color-subtle;
-      box-shadow: inset 0 1px 2px hsla(0,0%,100%,.1), 0 1px 2px hsla(0,0%,0%,.2);
+      border-radius: 22px;
+      border: 2px solid #fff;
+      box-shadow: inset 0 1px 2px hsla(0,0%,0%,.4), 0 0 0 1px hsla(0,0%,0%,.1), 0 2px 2px hsla(0,0%,0%,.2);
       background-clip: content-box;
-      backface-visibility: hidden;
-      transition: transform .1s;
 
-      &:hover { transform: scale(1.09); }
-      &:active { transform: scale(.96); }
+      &:hover {
+        border-color: #ccc;
+      }
+      &:active {
+        border-color: #999;
+      }
     }
 
     &-color-white {
