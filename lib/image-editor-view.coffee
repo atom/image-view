@@ -37,6 +37,7 @@ class ImageEditorView extends ScrollView
       'image-view:reset-zoom': => @resetZoom()
 
     @imageContainer.on 'click', =>
+      @imageContainer.off 'click'
       @manualZoom()
 
     @image.load =>
