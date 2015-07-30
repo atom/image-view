@@ -12,6 +12,9 @@
   // Image Controls -------------------
 
   .image-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: @spacing;
     border-bottom: 1px solid @panel-heading-border-color;
     background-color: @panel-heading-background-color;
@@ -63,17 +66,16 @@
     margin: auto;
   }
 
-  img {
-    background-position: right bottom;
-    &.white {
-      background-color: white;
-      background-image: url(@transparent-background-image);
-    }
-    &.black {
-      background-color: black;
-      background-image: url(@transparent-background-image);
-    }
+  // Background color
+  [background="white"] img {
+    background-color: white;
+    background-image: url(@transparent-background-image);
   }
+  [background="black"] img {
+    background-color: black;
+    background-image: url(@transparent-background-image);
+  }
+
 
 
   // Zoom to fit -------------------
@@ -81,8 +83,15 @@
 
   .zoom-to-fit {
     &.image-container {
-      cursor: zoom-in;
       padding: @component-padding;
+      &[background="white"] {
+        background-color: white;
+        background-image: url(@transparent-background-image);
+      }
+      &[background="black"] {
+        background-color: black;
+        background-image: url(@transparent-background-image);
+      }
     }
     .image-container-cell {
       display: flex;
@@ -90,6 +99,7 @@
     }
     img {
       object-fit: contain;
+      background: transparent;
     }
   }
 

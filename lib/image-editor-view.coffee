@@ -9,11 +9,18 @@ class ImageEditorView extends ScrollView
   @content: ->
     @div class: 'image-view', tabindex: -1, =>
       @div class: 'image-controls', outlet: 'imageControls', =>
-        @a outlet: 'whiteTransparentBackgroundButton', class: 'image-controls-color-white', value: 'white', =>
-          @text 'white'
-        @a outlet: 'blackTransparentBackgroundButton', class: 'image-controls-color-black', value: 'black', =>
-          @text 'black'
-      @div class: 'image-container zoom-to-fit', outlet: 'imageContainer', =>
+        @div class: 'image-controls-group', =>
+          @a outlet: 'whiteTransparentBackgroundButton', class: 'image-controls-color-white', value: 'white', =>
+            @text 'white'
+          @a outlet: 'blackTransparentBackgroundButton', class: 'image-controls-color-black', value: 'black', =>
+            @text 'black'
+          @a outlet: 'transparentTransparentBackgroundButton', class: 'image-controls-color-transparent', value: 'transparent', =>
+            @text 'transparent'
+        @div class: 'image-controls-group btn-group', =>
+          @button class: 'btn selected', outlet: 'resetZoomButton', 'Actual size'
+          @button class: 'btn', outlet: 'zoomToFitButton', 'Zoom to fit'
+
+      @div class: 'image-container', background: 'white', outlet: 'imageContainer', =>
         @div class: 'image-container-cell', =>
           @img outlet: 'image'
 
@@ -25,7 +32,7 @@ class ImageEditorView extends ScrollView
     @disposables = new CompositeDisposable
 
     @loaded = false
-    @mode = 'zoom-to-fit'
+    @mode = 'reset-zoom'
     @image.hide()
     @updateImageURI()
 
@@ -34,11 +41,8 @@ class ImageEditorView extends ScrollView
       'image-view:reload': => @updateImageURI()
       'image-view:zoom-in': => @zoomIn()
       'image-view:zoom-out': => @zoomOut()
+      'image-view:zoom-to-fit': => @zoomToFit()
       'image-view:reset-zoom': => @resetZoom()
-
-    @imageContainer.on 'click', =>
-      @imageContainer.off 'click'
-      @manualZoom()
 
     @image.load =>
       @originalHeight = @image.height()
@@ -49,11 +53,14 @@ class ImageEditorView extends ScrollView
 
     @disposables.add atom.tooltips.add @whiteTransparentBackgroundButton[0], title: "Use white transparent background"
     @disposables.add atom.tooltips.add @blackTransparentBackgroundButton[0], title: "Use black transparent background"
+    @disposables.add atom.tooltips.add @transparentTransparentBackgroundButton[0], title: "Use transparent background"
 
     if @getPane()
       @imageControls.find('a').on 'click', (e) =>
         @changeBackground $(e.target).attr 'value'
-      @imageControls.hide()
+
+    @resetZoomButton.on 'click', => @resetZoom()
+    @zoomToFitButton.on 'click', => @zoomToFit()
 
   onDidLoad: (callback) ->
     @emitter.on 'did-load', callback
@@ -70,16 +77,6 @@ class ImageEditorView extends ScrollView
   getPane: ->
     @parents('.pane')[0]
 
-  # Switch to manual zoom mode
-  manualZoom: ->
-    @mode = 'manual-zoom'
-    @imageContainer.removeClass 'zoom-to-fit'
-
-    # Show controls except for jpg and jpeg images as they don't have transparency
-    if path.extname(@editor.getPath()).toLowerCase() not in ['.jpg', '.jpeg']
-      @changeBackground('white')
-      @imageControls.show()
-
   # Zooms the image out by 10%.
   zoomOut: ->
     @adjustSize(0.9)
@@ -92,8 +89,23 @@ class ImageEditorView extends ScrollView
   resetZoom: ->
     return unless @loaded and @isVisible()
 
+    @mode = 'reset-zoom'
+    @imageContainer.removeClass 'zoom-to-fit'
+    @resetZoomButton.addClass 'selected'
+    @zoomToFitButton.removeClass 'selected'
     @image.width(@originalWidth)
     @image.height(@originalHeight)
+
+  # Zooms to fit the image, doesn't scale beyond actual size
+  zoomToFit: ->
+    return unless @loaded and @isVisible()
+
+    @mode = 'zoom-to-fit'
+    @imageContainer.addClass 'zoom-to-fit'
+    @resetZoomButton.removeClass 'selected'
+    @zoomToFitButton.addClass 'selected'
+    @image.width('auto')
+    @image.height('auto')
 
   # Adjust the size of the image by the given multiplying factor.
   #
@@ -102,7 +114,13 @@ class ImageEditorView extends ScrollView
     return unless @loaded and @isVisible()
 
     if @mode is 'zoom-to-fit'
-      @manualZoom()
+      @mode = 'zoom-manual'
+      @imageContainer.removeClass 'zoom-to-fit'
+      @zoomToFitButton.removeClass 'selected'
+
+    else if @mode is 'reset-zoom'
+      @mode = 'zoom-manual'
+      @resetZoomButton.removeClass 'selected'
 
     newWidth = @image.width() * factor
     newHeight = @image.height() * factor
@@ -114,4 +132,4 @@ class ImageEditorView extends ScrollView
   # color - A {String} that gets used as class name.
   changeBackground: (color) ->
     return unless @loaded and @isVisible() and color
-    @image.attr('class', color)
+    @imageContainer.attr('background', color)
