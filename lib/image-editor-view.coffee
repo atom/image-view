@@ -17,7 +17,10 @@ class ImageEditorView extends ScrollView
           @a outlet: 'transparentTransparentBackgroundButton', class: 'image-controls-color-transparent', value: 'transparent', =>
             @text 'transparent'
         @div class: 'image-controls-group btn-group', =>
+          @button class: 'btn', outlet: 'zoomOutButton', '-'
           @button class: 'btn selected', outlet: 'resetZoomButton', 'Actual size'
+          @button class: 'btn', outlet: 'zoomInButton', '+'
+        @div class: 'image-controls-group btn-group', =>
           @button class: 'btn', outlet: 'zoomToFitButton', 'Zoom to fit'
 
       @div class: 'image-container', background: 'white', outlet: 'imageContainer', =>
@@ -59,6 +62,8 @@ class ImageEditorView extends ScrollView
       @imageControls.find('a').on 'click', (e) =>
         @changeBackground $(e.target).attr 'value'
 
+    @zoomInButton.on 'click', => @zoomIn()
+    @zoomOutButton.on 'click', => @zoomOut()
     @resetZoomButton.on 'click', => @resetZoom()
     @zoomToFitButton.on 'click', => @zoomToFit()
 
@@ -104,8 +109,8 @@ class ImageEditorView extends ScrollView
     @imageContainer.addClass 'zoom-to-fit'
     @resetZoomButton.removeClass 'selected'
     @zoomToFitButton.addClass 'selected'
-    @image.width('auto')
-    @image.height('auto')
+    @image.width('')
+    @image.height('')
 
   # Adjust the size of the image by the given multiplying factor.
   #
