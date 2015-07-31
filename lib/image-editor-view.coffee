@@ -129,6 +129,12 @@ class ImageEditorView extends ScrollView
 
     newWidth = @image.width() * factor
     newHeight = @image.height() * factor
+
+    if newWidth > @originalWidth*2
+      @image.css 'image-rendering', 'pixelated'
+    else
+      @image.css 'image-rendering', ''
+
     @image.width(newWidth)
     @image.height(newHeight)
 
