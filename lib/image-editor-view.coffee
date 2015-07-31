@@ -84,11 +84,11 @@ class ImageEditorView extends ScrollView
 
   # Zooms the image out by 10%.
   zoomOut: ->
-    @adjustSize(0.9)
+    @adjustSize(0.75)
 
   # Zooms the image in by 10%.
   zoomIn: ->
-    @adjustSize(1.1)
+    @adjustSize(1.25)
 
   # Zooms the image to its normal width and height.
   resetZoom: ->
