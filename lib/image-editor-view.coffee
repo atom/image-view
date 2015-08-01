@@ -110,7 +110,7 @@ class ImageEditorView extends ScrollView
     @zoomToFitButton.addClass 'selected'
     @image.width('')
     @image.height('')
-    @resetZoomButton.text('auto')
+    @resetZoomButton.text('Auto')
 
   # Adjust the size of the image by the given multiplying factor.
   #
