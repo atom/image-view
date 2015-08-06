@@ -11,7 +11,6 @@
   "dependencies": {
     "atom-space-pen-views": "^2.0.0",
     "fs-plus": "^2.0.0",
-    "pathwatcher": "^4.2",
     "underscore-plus": "^1.0.0"
   },
   "consumedServices": {
