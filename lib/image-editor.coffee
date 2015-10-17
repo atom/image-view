@@ -52,7 +52,7 @@ class ImageEditor
   # Retrieves the URI of the image.
   #
   # Returns a {String}.
-  getURI: -> @getPath()
+  getURI: -> encodeURI(@getPath()).replace('#', '%23').replace('?', '%3F')
 
   # Retrieves the absolute path to the image.
   #
