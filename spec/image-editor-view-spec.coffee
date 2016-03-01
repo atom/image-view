@@ -43,16 +43,16 @@ describe "ImageEditorView", ->
       expect(view.updateImageURI).toHaveBeenCalled()
 
   describe "image-view:zoom-in", ->
-    it "increases the image size by 10%", ->
+    it "increases the image size by 25%", ->
       atom.commands.dispatch view.element, 'image-view:zoom-in'
-      expect(view.image.width()).toBe 11
-      expect(view.image.height()).toBe 11
+      expect(view.image.width()).toBe 13
+      expect(view.image.height()).toBe 13
 
   describe "image-view:zoom-out", ->
-    it "decreases the image size by 10%", ->
+    it "decreases the image size by 25%", ->
       atom.commands.dispatch view.element, 'image-view:zoom-out'
-      expect(view.image.width()).toBe 9
-      expect(view.image.height()).toBe 9
+      expect(view.image.width()).toBe 8
+      expect(view.image.height()).toBe 8
 
   describe "image-view:reset-zoom", ->
     it "restores the image to the original size", ->
