@@ -24,8 +24,7 @@ class ImageEditorView extends ScrollView
           @button class: 'btn', outlet: 'zoomToFitButton', 'Zoom to fit'
 
       @div class: 'image-container', background: 'white', outlet: 'imageContainer', =>
-        @div class: 'image-container-cell', =>
-          @img outlet: 'image'
+        @img outlet: 'image'
 
   initialize: (@editor) ->
     super

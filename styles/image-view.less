@@ -65,21 +65,22 @@
   // Image -------------------
 
   .image-container {
-    flex: 1;
+    flex: 1 1 0;
     display: flex;
     overflow: auto;
-  }
 
-  .image-container-cell {
-    margin: auto;
+    img {
+      flex: none;
+      margin: auto;
+    }
   }
 
   // Background color
-  [background="white"] img {
+  [background="white"] {
     background-color: white;
     background-image: url(@transparent-background-image);
   }
-  [background="black"] img {
+  [background="black"] {
     background-color: black;
     background-image: url(@transparent-background-image);
   }
@@ -92,22 +93,15 @@
   .zoom-to-fit {
     &.image-container {
       padding: @component-padding;
-      &[background="white"] {
-        background-color: white;
-        background-image: url(@transparent-background-image);
+
+      img {
+        flex: 1 1 0;
+        margin: 0;
+
+        // Alternative: object-fit: contain;
+        // then it would also scale larger than its original size
+        object-fit: scale-down;
       }
-      &[background="black"] {
-        background-color: black;
-        background-image: url(@transparent-background-image);
-      }
-    }
-    .image-container-cell {
-      display: flex;
-      margin: 0 auto;
-    }
-    img {
-      object-fit: contain;
-      background: transparent;
     }
   }
 
