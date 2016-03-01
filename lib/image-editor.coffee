@@ -1,7 +1,6 @@
 path = require 'path'
 fs = require 'fs-plus'
-{File} = require 'pathwatcher'
-{CompositeDisposable} = require 'atom'
+{File, CompositeDisposable} = require 'atom'
 
 # Editor model for an image file
 module.exports =
@@ -53,7 +52,7 @@ class ImageEditor
   # Retrieves the URI of the image.
   #
   # Returns a {String}.
-  getURI: -> @getPath()
+  getURI: -> encodeURI(@getPath()).replace(/#/g, '%23').replace(/\?/g, '%3F')
 
   # Retrieves the absolute path to the image.
   #

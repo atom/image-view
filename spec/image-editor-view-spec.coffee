@@ -93,3 +93,24 @@ describe "ImageEditorView", ->
 
     it "displays the size of the image", ->
       expect(imageSizeStatus.text()).toBe '10x10'
+
+  describe "when special characters are used in the file name", ->
+    describe "when '?' exists in the file name", ->
+      it "is replaced with %3F", ->
+        newEditor = new ImageEditor('/test/file/?.png')
+        expect(newEditor.getURI()).toBe('/test/file/%3F.png')
+
+    describe "when '#' exists in the file name", ->
+      it "is replaced with %23", ->
+        newEditor = new ImageEditor('/test/file/#.png')
+        expect(newEditor.getURI()).toBe('/test/file/%23.png')
+
+    describe "when '%2F' exists in the file name", ->
+      it "should properly encode the %", ->
+        newEditor = new ImageEditor('/test/file/%2F.png')
+        expect(newEditor.getURI()).toBe('/test/file/%252F.png')
+
+    describe "when multiple special characters exist in the file name", ->
+      it "are all replaced with escaped characters", ->
+        newEditor = new ImageEditor('/test/file/a?#b#?.png')
+        expect(newEditor.getURI()).toBe('/test/file/a%3F%23b%23%3F.png')
