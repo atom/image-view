@@ -15,6 +15,7 @@ class ImageEditor
 
   constructor: (filePath) ->
     @file = new File(filePath)
+    @uri = "file://" + encodeURI(filePath.replace(/\\/g, '/')).replace(/#/g, '%23').replace(/\?/g, '%3F')
     @subscriptions = new CompositeDisposable()
 
   serialize: ->
@@ -52,7 +53,7 @@ class ImageEditor
   # Retrieves the URI of the image.
   #
   # Returns a {String}.
-  getURI: -> encodeURI(@getPath()).replace(/#/g, '%23').replace(/\?/g, '%3F')
+  getURI: -> @uri
 
   # Retrieves the absolute path to the image.
   #
