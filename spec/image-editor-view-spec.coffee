@@ -3,7 +3,7 @@ ImageEditorView = require '../lib/image-editor-view'
 ImageEditor = require '../lib/image-editor'
 
 describe "ImageEditorView", ->
-  [editor, view, filePath, workspaceElement] = []
+  [editor, view, filePath, urlPath, workspaceElement] = []
 
   beforeEach ->
     workspaceElement = atom.views.getView(atom.workspace)
@@ -20,7 +20,7 @@ describe "ImageEditorView", ->
     view.remove()
 
   it "displays the image for a path", ->
-    expect(view.image.attr('src')).toContain filePath
+    expect(view.image.attr('src')).toContain '/fixtures/binary-file.png'
 
   describe "when the image is changed", ->
     it "reloads the image", ->
@@ -81,7 +81,8 @@ describe "ImageEditorView", ->
         view = $(atom.views.getView(atom.workspace.getActivePaneItem())).view()
         view.height(100)
 
-      waitsFor -> view.loaded
+      waitsFor ->
+        view.loaded
 
       waitsForPromise ->
         atom.packages.activatePackage('status-bar')
@@ -98,19 +99,19 @@ describe "ImageEditorView", ->
     describe "when '?' exists in the file name", ->
       it "is replaced with %3F", ->
         newEditor = new ImageEditor('/test/file/?.png')
-        expect(newEditor.getURI()).toBe('/test/file/%3F.png')
+        expect(newEditor.getURI()).toBe('file:///test/file/%3F.png')
 
     describe "when '#' exists in the file name", ->
       it "is replaced with %23", ->
         newEditor = new ImageEditor('/test/file/#.png')
-        expect(newEditor.getURI()).toBe('/test/file/%23.png')
+        expect(newEditor.getURI()).toBe('file:///test/file/%23.png')
 
     describe "when '%2F' exists in the file name", ->
       it "should properly encode the %", ->
         newEditor = new ImageEditor('/test/file/%2F.png')
-        expect(newEditor.getURI()).toBe('/test/file/%252F.png')
+        expect(newEditor.getURI()).toBe('file:///test/file/%252F.png')
 
     describe "when multiple special characters exist in the file name", ->
       it "are all replaced with escaped characters", ->
         newEditor = new ImageEditor('/test/file/a?#b#?.png')
-        expect(newEditor.getURI()).toBe('/test/file/a%3F%23b%23%3F.png')
+        expect(newEditor.getURI()).toBe('file:///test/file/a%3F%23b%23%3F.png')
