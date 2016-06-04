@@ -6,6 +6,7 @@ Open images in an editor in Atom. Support zooming via `cmd-+`, `cmd--`, and
 
 Currently supports the following file extensions:
 
+  * `.bmp`
   * `.gif`
   * `.ico`
   * `.jpeg`
