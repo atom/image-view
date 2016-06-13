@@ -1,7 +1,8 @@
-# Image View package [![Build Status](https://travis-ci.org/atom/image-view.svg?branch=master)](https://travis-ci.org/atom/image-view)
+# Image View package
+[![OS X Build Status](https://travis-ci.org/atom/image-view.svg?branch=master)](https://travis-ci.org/atom/image-view)
+[![Windows Build Status](https://ci.appveyor.com/api/projects/status/notavaawrswk0g10/branch/master?svg=true)](https://ci.appveyor.com/project/Atom/image-view/branch/master) [![Dependency Status](https://david-dm.org/atom/image-view.svg)](https://david-dm.org/atom/image-view)
 
-Open images in an editor in Atom. Support zooming via `cmd-+`, `cmd--`, and
-`cmd-0`.
+Open images in an editor in Atom. Support zooming via <kbd>cmd-+</kbd>, <kbd>cmd--</kbd>, and <kbd>cmd-0</kbd>.
 
 
 Currently supports the following file extensions:
