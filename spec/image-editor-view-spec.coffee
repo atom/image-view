@@ -63,6 +63,11 @@ describe "ImageEditorView", ->
       expect(view.image.width()).toBe 10
       expect(view.image.height()).toBe 10
 
+  describe ".adjustSize(factor)", ->
+    it "does not allow a zoom percentage lower than 1%", ->
+      view.adjustSize(0)
+      expect(view.resetZoomButton.text()).toBe '1%'
+
   describe "ImageEditorStatusView", ->
     [imageSizeStatus] = []
 

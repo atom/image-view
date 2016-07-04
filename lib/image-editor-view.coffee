@@ -126,7 +126,7 @@ class ImageEditorView extends ScrollView
 
     newWidth = @image.width() * factor
     newHeight = @image.height() * factor
-    percent = Math.round(newWidth/@originalWidth*100)
+    percent = Math.max(1, Math.round(newWidth/@originalWidth*100))
 
     # Switch to pixelated rendering when image is bigger than 200%
     if newWidth > @originalWidth*2
