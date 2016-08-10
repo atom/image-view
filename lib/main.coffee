@@ -27,7 +27,7 @@ module.exports =
     @statusViewAttached = true
 
 # Files with these extensions will be opened as images
-imageExtensions = ['.bmp', '.gif', '.ico', '.jpeg', '.jpg', '.png', '.webp']
+imageExtensions = ['.bmp', '.gif', '.ico', '.jpeg', '.jpg', '.png', '.tiff', '.webp']
 openURI = (uriToOpen) ->
   uriExtension = path.extname(uriToOpen).toLowerCase()
   if _.include(imageExtensions, uriExtension)
