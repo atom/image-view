@@ -20,8 +20,8 @@ class ImageEditorStatusView extends View
   attached: ->
     @updateImageSize()
 
-  getImageSize: ({originalHeight, originalWidth}) ->
-    @imageSizeStatus.text("#{originalWidth}x#{originalHeight}").show()
+  getImageSize: ({originalHeight, originalWidth, imageSize}) ->
+    @imageSizeStatus.text("#{originalWidth}x#{originalHeight} #{imageSize}").show()
 
   updateImageSize: ->
     @imageLoadDisposable?.dispose()
