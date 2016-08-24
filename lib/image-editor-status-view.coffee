@@ -1,6 +1,7 @@
 {$, View} = require 'atom-space-pen-views'
 {CompositeDisposable} = require 'atom'
 ImageEditor = require './image-editor'
+bytes = require 'bytes'
 
 module.exports =
 class ImageEditorStatusView extends View
@@ -21,7 +22,7 @@ class ImageEditorStatusView extends View
     @updateImageSize()
 
   getImageSize: ({originalHeight, originalWidth, imageSize}) ->
-    @imageSizeStatus.text("#{originalWidth}x#{originalHeight} #{imageSize}").show()
+    @imageSizeStatus.text("#{originalWidth}x#{originalHeight} #{bytes(imageSize)}").show()
 
   updateImageSize: ->
     @imageLoadDisposable?.dispose()
