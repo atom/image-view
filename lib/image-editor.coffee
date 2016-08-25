@@ -1,6 +1,6 @@
 path = require 'path'
 fs = require 'fs-plus'
-{File, CompositeDisposable} = require 'atom'
+{Emitter, File, CompositeDisposable} = require 'atom'
 
 # Editor model for an image file
 module.exports =
@@ -17,12 +17,19 @@ class ImageEditor
     @file = new File(filePath)
     @uri = "file://" + encodeURI(filePath.replace(/\\/g, '/')).replace(/#/g, '%23').replace(/\?/g, '%3F')
     @subscriptions = new CompositeDisposable()
+    @emitter = new Emitter
 
   serialize: ->
     {filePath: @getPath(), deserializer: @constructor.name}
 
   getViewClass: ->
     require './image-editor-view'
+
+  terminatePendingState: ->
+    @emitter.emit 'did-terminate-pending-state' if this.isEqual(atom.workspace.getActivePane().getPendingItem())
+
+  onDidTerminatePendingState: (callback) ->
+    @emitter.on 'did-terminate-pending-state', callback
 
   # Register a callback for when the image file changes
   onDidChange: (callback) ->
@@ -67,3 +74,11 @@ class ImageEditor
   # Returns a {Boolean}.
   isEqual: (other) ->
     other instanceof ImageEditor and @getURI() is other.getURI()
+
+  # Essential: Invoke the given callback when the editor is destroyed.
+  #
+  # * `callback` {Function} to be called when the editor is destroyed.
+  #
+  # Returns a {Disposable} on which `.dispose()` can be called to unsubscribe.
+  onDidDestroy: (callback) ->
+    @emitter.on 'did-destroy', callback
