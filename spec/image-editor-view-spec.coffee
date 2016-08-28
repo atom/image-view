@@ -122,7 +122,7 @@ describe "ImageEditorView", ->
         newEditor = new ImageEditor('/test/file/a?#b#?.png')
         expect(newEditor.getURI()).toBe('file:///test/file/a%3F%23b%23%3F.png')
 
-  describe "open many images size", ->
+  describe "when multiple images are opened at the same time", ->
     beforeEach ->
       view.detach()
       jasmine.attachToDOM(workspaceElement)
