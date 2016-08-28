@@ -35,3 +35,41 @@ describe "ImageEditor", ->
 
       runs ->
         expect(atom.workspace.getActivePaneItem() instanceof ImageEditor).toBe false
+
+  describe "::onDidTerminatePendingState", ->
+    item = null
+    pendingSpy = null
+
+    beforeEach ->
+      pendingSpy = jasmine.createSpy("onDidTerminatePendingState")
+
+      waitsForPromise ->
+        atom.packages.activatePackage('image-view')
+
+    it "is called when pending state gets terminated for the active ImageEditor", ->
+      runs ->
+        atom.workspace.open(path.join(__dirname, 'fixtures', 'binary-file.png'), pending: true)
+
+      waitsFor ->
+        atom.workspace.getActivePane().getPendingItem() instanceof ImageEditor
+
+      runs ->
+        item = atom.workspace.getActivePane().getPendingItem()
+        expect(item.getTitle()).toBe 'binary-file.png'
+        item.onDidTerminatePendingState pendingSpy
+        item.terminatePendingState()
+        expect(pendingSpy).toHaveBeenCalled()
+
+    it "is not called when the ImageEditor is not pending", ->
+      runs ->
+        atom.workspace.open(path.join(__dirname, 'fixtures', 'binary-file.png'), pending: false)
+
+      waitsFor ->
+        atom.workspace.getActivePaneItem() instanceof ImageEditor
+
+      runs ->
+        item = atom.workspace.getActivePaneItem()
+        expect(item.getTitle()).toBe 'binary-file.png'
+        item.onDidTerminatePendingState pendingSpy
+        item.terminatePendingState()
+        expect(pendingSpy).not.toHaveBeenCalled()
