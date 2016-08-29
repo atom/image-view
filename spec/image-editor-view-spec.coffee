@@ -98,7 +98,7 @@ describe "ImageEditorView", ->
         expect(imageSizeStatus).toExist()
 
     it "displays the size of the image", ->
-      expect(imageSizeStatus.text()).toBe '10x10'
+      expect(imageSizeStatus.text()).toBe '10x10 392B'
 
   describe "when special characters are used in the file name", ->
     describe "when '?' exists in the file name", ->

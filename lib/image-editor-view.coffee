@@ -1,5 +1,6 @@
 _ = require 'underscore-plus'
 path = require 'path'
+fs = require 'fs-plus'
 {$, ScrollView} = require 'atom-space-pen-views'
 {Emitter, CompositeDisposable} = require 'atom'
 
@@ -29,6 +30,7 @@ class ImageEditorView extends ScrollView
   initialize: (@editor) ->
     super
     @emitter = new Emitter
+    @imageSize = fs.statSync(@editor.getPath())["size"]
 
   attached: ->
     @disposables = new CompositeDisposable
