@@ -3,11 +3,12 @@ ImageEditorView = require '../lib/image-editor-view'
 ImageEditor = require '../lib/image-editor'
 
 describe "ImageEditorView", ->
-  [editor, view, filePath, urlPath, workspaceElement] = []
+  [editor, view, filePath, filePath2, workspaceElement] = []
 
   beforeEach ->
     workspaceElement = atom.views.getView(atom.workspace)
     filePath = atom.project.getDirectories()[0].resolve('binary-file.png')
+    filePath2 = atom.project.getDirectories()[0].resolve('binary-file-2.png')
     editor = new ImageEditor(filePath)
     view = new ImageEditorView(editor)
     view.height(100)
@@ -120,3 +121,49 @@ describe "ImageEditorView", ->
       it "are all replaced with escaped characters", ->
         newEditor = new ImageEditor('/test/file/a?#b#?.png')
         expect(newEditor.getURI()).toBe('file:///test/file/a%3F%23b%23%3F.png')
+
+  describe "when multiple images are opened at the same time", ->
+    beforeEach ->
+      view.detach()
+      jasmine.attachToDOM(workspaceElement)
+
+      waitsForPromise ->
+        atom.packages.activatePackage('image-view')
+
+    it "correctly calculates originalWidth and originalHeight for all opened images", ->
+      imageEditor1 = null
+      imageEditor2 = null
+      imageEditorView1 = null
+      imageEditorView2 = null
+
+      openedCount = 0
+      originalOpen = atom.workspace.open.bind(atom.workspace)
+      spyOn(atom.workspace, 'open').andCallFake (uri, options) ->
+        originalOpen(uri, options).then -> openedCount++
+
+      runs ->
+        atom.workspace.open(filePath)
+        atom.workspace.open(filePath2)
+
+      waitsFor 'open to be called twice', ->
+        openedCount is 2
+
+      runs ->
+        expect(atom.workspace.getActivePane().getItems().length).toBe 2
+        imageEditor1 = atom.workspace.getActivePane().getItems()[0]
+        imageEditor2 = atom.workspace.getActivePane().getItems()[1]
+        expect(imageEditor1).toBe instanceof ImageEditor
+        expect(imageEditor2).toBe instanceof ImageEditor
+
+        imageEditorView1 = $(atom.views.getView(imageEditor1)).view()
+        imageEditorView2 = $(atom.views.getView(imageEditor2)).view()
+
+      waitsFor ->
+        imageEditorView1.loaded
+        imageEditorView2.loaded
+
+      runs ->
+        expect(imageEditorView1.originalWidth).toBe 10
+        expect(imageEditorView1.originalHeight).toBe 10
+        expect(imageEditorView2.originalWidth).toBe 10
+        expect(imageEditorView2.originalHeight).toBe 10

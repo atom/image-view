@@ -49,8 +49,8 @@ class ImageEditorView extends ScrollView
       'image-view:reset-zoom': => @resetZoom()
 
     @image.load =>
-      @originalHeight = @image.height()
-      @originalWidth = @image.width()
+      @originalHeight = @image.prop('naturalHeight')
+      @originalWidth = @image.prop('naturalWidth')
       @loaded = true
       @image.show()
       @emitter.emit 'did-load'
