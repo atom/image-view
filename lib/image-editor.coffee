@@ -1,3 +1,4 @@
+_ = require 'underscore-plus'
 path = require 'path'
 fs = require 'fs-plus'
 {Emitter, File, CompositeDisposable} = require 'atom'
@@ -52,10 +53,63 @@ class ImageEditor
   #
   # Returns a {String}.
   getTitle: ->
+      @getFileName() ? 'untitled'
+
+  # Retireves all ImageEditors in the workspace.
+  #
+  # Returns an {Array} of {ImageEditors}.
+  getImageEditors: ->
+      atom.workspace.getPaneItems().filter (item) -> item instanceof ImageEditor
+
+  # Essential: Get unique title for display in other parts of the UI, such as
+  # the window title.
+  #
+  # If the editor's buffer is unsaved, its title is "untitled"
+  # If the editor's buffer is saved, its unique title is formatted as one
+  # of the following,
+  # * "<filename>" when it is the only editing buffer with this file name.
+  # * "<filename> — <unique-dir-prefix>" when other buffers have this file name.
+  #
+  # Returns a {String}
+  getLongTitle: ->
+    if @getPath()
+      fileName = @getFileName()
+
+      allPathSegments = []
+      for imageEditor in @getImageEditors() when imageEditor isnt this
+        if imageEditor.getFileName() is fileName
+          allPathSegments.push(imageEditor.getDirectoryPath().split(path.sep))
+
+      if allPathSegments.length is 0
+        return fileName
+
+      ourPathSegments = @getDirectoryPath().split(path.sep)
+      allPathSegments.push ourPathSegments
+
+      loop
+        firstSegment = ourPathSegments[0]
+
+        commonBase = _.all(allPathSegments, (pathSegments) -> pathSegments.length > 1 and pathSegments[0] is firstSegment)
+        if commonBase
+          pathSegments.shift() for pathSegments in allPathSegments
+        else
+          break
+
+      "#{fileName} \u2014 #{path.join(pathSegments...)}"
+    else
+      'untitled'
+
+  getFileName: ->
     if filePath = @getPath()
       path.basename(filePath)
     else
-      'untitled'
+      null
+
+  getDirectoryPath: ->
+    if fullPath = @getPath()
+      path.dirname(fullPath)
+    else
+      null
 
   # Retrieves the URI of the image.
   #
