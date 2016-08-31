@@ -51,7 +51,7 @@ class ImageEditor
   #
   # Returns an {Array} of {ImageEditor}s.
   getImageEditors: ->
-      atom.workspace.getPaneItems().filter (item) -> item instanceof ImageEditor
+    atom.workspace.getPaneItems().filter (item) -> item instanceof ImageEditor
 
   # Essential: Get the {ImageEditor}s title for display in other parts
   # of the UI such as tabs.
@@ -60,7 +60,7 @@ class ImageEditor
   #
   # Returns a {String}.
   getTitle: ->
-      @getFileName() ? 'untitled'
+    @getFileName() ? 'untitled'
 
   # Essential: Get unique title for display in other parts of the UI, such as
   # the window title.
