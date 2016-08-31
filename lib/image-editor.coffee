@@ -38,7 +38,7 @@ class ImageEditor
     @subscriptions.add(changeSubscription)
     changeSubscription
 
-  # Register a callback for whne the image's title changes
+  # Register a callback for when the image's title changes
   onDidChangeTitle: (callback) ->
     renameSubscription = @file.onDidRename(callback)
     @subscriptions.add(renameSubscription)
@@ -47,28 +47,29 @@ class ImageEditor
   destroy: ->
     @subscriptions.dispose()
 
-  # Retrieves the filename of the open file.
+  # Essential: Retireves all {ImageEditor}s in the workspace.
   #
-  # This is `'untitled'` if the file is new and not saved to the disk.
+  # Returns an {Array} of {ImageEditor}s.
+  getImageEditors: ->
+      atom.workspace.getPaneItems().filter (item) -> item instanceof ImageEditor
+
+  # Essential: Get the {ImageEditor}s title for display in other parts
+  # of the UI such as tabs.
+  #
+  # This is `'untitled'` if the image not saved to the disk.
   #
   # Returns a {String}.
   getTitle: ->
       @getFileName() ? 'untitled'
 
-  # Retireves all ImageEditors in the workspace.
-  #
-  # Returns an {Array} of {ImageEditors}.
-  getImageEditors: ->
-      atom.workspace.getPaneItems().filter (item) -> item instanceof ImageEditor
-
   # Essential: Get unique title for display in other parts of the UI, such as
   # the window title.
   #
-  # If the editor's buffer is unsaved, its title is "untitled"
-  # If the editor's buffer is saved, its unique title is formatted as one
+  # If the image is not saved to disk its title is "untitled"
+  # If the image is saved, its unique title is formatted as one
   # of the following,
-  # * "<filename>" when it is the only editing buffer with this file name.
-  # * "<filename> — <unique-dir-prefix>" when other buffers have this file name.
+  # * "<filename>" when it is the only existing {ImageEditor} with this file name.
+  # * "<filename> — <unique-dir-prefix>" when other {ImageEditors} have this file name.
   #
   # Returns a {String}
   getLongTitle: ->
