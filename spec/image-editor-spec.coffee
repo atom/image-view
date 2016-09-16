@@ -1,6 +1,5 @@
 path = require 'path'
 ImageEditor = require '../lib/image-editor'
-ImageEditorView = require '../lib/image-editor-view'
 
 describe "ImageEditor", ->
   describe ".deserialize(state)", ->
