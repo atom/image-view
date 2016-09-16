@@ -1,4 +1,4 @@
-{View, $} = require 'atom-space-pen-views'
+{$} = require 'atom-space-pen-views'
 ImageEditorView = require '../lib/image-editor-view'
 ImageEditor = require '../lib/image-editor'
 
