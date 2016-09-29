@@ -73,7 +73,7 @@ class ImageEditorView extends ScrollView
     @disposables.dispose()
 
   updateImageURI: ->
-    @image.attr('src', "#{@editor.getURI()}?time=#{Date.now()}")
+    @image.attr('src', "#{@editor.getEncodedURI()}?time=#{Date.now()}")
 
   # Retrieves this view's pane.
   #

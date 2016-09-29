@@ -15,7 +15,6 @@ class ImageEditor
 
   constructor: (filePath) ->
     @file = new File(filePath)
-    @uri = "file://" + encodeURI(filePath.replace(/\\/g, '/')).replace(/#/g, '%23').replace(/\?/g, '%3F')
     @subscriptions = new CompositeDisposable()
     @emitter = new Emitter
 
@@ -57,15 +56,23 @@ class ImageEditor
     else
       'untitled'
 
-  # Retrieves the URI of the image.
-  #
-  # Returns a {String}.
-  getURI: -> @uri
-
   # Retrieves the absolute path to the image.
   #
   # Returns a {String} path.
-  getPath: -> @file.getPath()
+  getPath: ->
+    @file.getPath()
+
+  # Retrieves the URI of the image.
+  #
+  # Returns a {String}.
+  getURI: ->
+    @getPath()
+
+  # Retrieves the encoded URI of the image.
+  #
+  # Returns a {String}.
+  getEncodedURI: ->
+    "file://" + encodeURI(@getPath().replace(/\\/g, '/')).replace(/#/g, '%23').replace(/\?/g, '%3F')
 
   # Compares two {ImageEditor}s to determine equality.
   #

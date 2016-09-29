@@ -72,3 +72,28 @@ describe "ImageEditor", ->
         item.onDidTerminatePendingState pendingSpy
         item.terminatePendingState()
         expect(pendingSpy).not.toHaveBeenCalled()
+
+  describe "when the image gets reopened", ->
+    beforeEach ->
+      waitsForPromise ->
+        atom.packages.activatePackage('image-view')
+
+    it "should not change the URI between each reopen", ->
+      uri = null
+
+      runs ->
+        atom.workspace.open(path.join(__dirname, 'fixtures', 'binary-file.png'))
+
+      waitsFor ->
+        atom.workspace.getActivePaneItem() instanceof ImageEditor
+
+      runs ->
+        uri = atom.workspace.getActivePaneItem().getURI()
+        atom.workspace.destroyActivePaneItem()
+        atom.workspace.reopenItem()
+
+      waitsFor ->
+        atom.workspace.getActivePaneItem() instanceof ImageEditor
+
+      runs ->
+        expect(atom.workspace.getActivePaneItem().getURI()).toBe uri
