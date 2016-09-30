@@ -47,7 +47,7 @@ class ImageEditor
   destroy: ->
     @subscriptions.dispose()
 
-  # Essential: Retireves all {ImageEditor}s in the workspace.
+  # Essential: Retrieves all {ImageEditor}s in the workspace.
   #
   # Returns an {Array} of {ImageEditor}s.
   getImageEditors: ->
@@ -69,7 +69,7 @@ class ImageEditor
   # If the image is saved, its unique title is formatted as one
   # of the following,
   # * "<filename>" when it is the only existing {ImageEditor} with this file name.
-  # * "<filename> — <unique-dir-prefix>" when other {ImageEditors} have this file name.
+  # * "<filename> — <unique-dir-prefix>" when other {ImageEditor}s have this file name.
   #
   # Returns a {String}
   getLongTitle: ->
