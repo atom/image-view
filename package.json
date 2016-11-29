@@ -23,5 +23,24 @@
   },
   "devDependencies": {
     "coffeelint": "^1.9.7"
+  },
+  "configSchema": {
+    "defaultImageBackgroundStyle": {
+      "title": "Default Image Background Style",
+      "description": "Choose the default image background style used when opening an image.",
+      "type": "string",
+      "default": "white",
+      "enum": [
+        {"value": "white", "description": "White Transparent"},
+        {"value": "black", "description": "Black Transparent"},
+        {"value": "transparent", "description": "Transparent"}
+      ]
+    },
+    "changeDefaultOnBackgroundSelection": {
+      "title": "Change Background Style Default on Selection",
+      "description": "When selecting a background style, set the selection as the default.",
+      "type": "boolean",
+      "default": "true"
+    }
   }
 }

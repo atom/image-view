@@ -22,7 +22,7 @@ class ImageEditorView extends ScrollView
         @div class: 'image-controls-group btn-group', =>
           @button class: 'btn', outlet: 'zoomToFitButton', 'Zoom to fit'
 
-      @div class: 'image-container', background: 'white', outlet: 'imageContainer', =>
+      @div class: 'image-container', background: 'transparent', outlet: 'imageContainer', =>
         @img outlet: 'image'
 
   initialize: (@editor) ->
@@ -50,6 +50,9 @@ class ImageEditorView extends ScrollView
       @originalHeight = @image.prop('naturalHeight')
       @originalWidth = @image.prop('naturalWidth')
       @loaded = true
+      @backgroundStyle = atom.config.get 'image-view.defaultImageBackgroundStyle'
+      unless @backgroundStyle is 'transparent'
+        @changeBackground @backgroundStyle
       @image.show()
       @emitter.emit 'did-load'
 
@@ -59,7 +62,10 @@ class ImageEditorView extends ScrollView
 
     if @getPane()
       @imageControls.find('a').on 'click', (e) =>
-        @changeBackground $(e.target).attr 'value'
+        @backgroundStyle = $(e.target).attr 'value'
+        @changeBackground @backgroundStyle
+        if atom.config.get 'image-view.changeDefaultOnBackgroundSelection'
+          atom.config.set 'image-view.defaultImageBackgroundStyle', @backgroundStyle
 
     @zoomInButton.on 'click', => @zoomIn()
     @zoomOutButton.on 'click', => @zoomOut()
