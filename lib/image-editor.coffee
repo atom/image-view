@@ -1,3 +1,4 @@
+_ = require 'underscore-plus'
 path = require 'path'
 fs = require 'fs-plus'
 {Emitter, File, CompositeDisposable} = require 'atom'
@@ -36,7 +37,7 @@ class ImageEditor
     @subscriptions.add(changeSubscription)
     changeSubscription
 
-  # Register a callback for whne the image's title changes
+  # Register a callback for when the image's title changes
   onDidChangeTitle: (callback) ->
     renameSubscription = @file.onDidRename(callback)
     @subscriptions.add(renameSubscription)
@@ -45,16 +46,70 @@ class ImageEditor
   destroy: ->
     @subscriptions.dispose()
 
-  # Retrieves the filename of the open file.
+  # Essential: Retrieves all {ImageEditor}s in the workspace.
   #
-  # This is `'untitled'` if the file is new and not saved to the disk.
+  # Returns an {Array} of {ImageEditor}s.
+  getImageEditors: ->
+    atom.workspace.getPaneItems().filter (item) -> item instanceof ImageEditor
+
+  # Essential: Get the {ImageEditor}s title for display in other parts
+  # of the UI such as tabs.
+  #
+  # This is `'untitled'` if the image not saved to the disk.
   #
   # Returns a {String}.
   getTitle: ->
+    @getFileName() ? 'untitled'
+
+  # Essential: Get unique title for display in other parts of the UI, such as
+  # the window title.
+  #
+  # If the image is not saved to disk its title is "untitled"
+  # If the image is saved, its unique title is formatted as one
+  # of the following,
+  # * "<filename>" when it is the only existing {ImageEditor} with this file name.
+  # * "<filename> — <unique-dir-prefix>" when other {ImageEditor}s have this file name.
+  #
+  # Returns a {String}
+  getLongTitle: ->
+    if @getPath()
+      fileName = @getFileName()
+
+      allPathSegments = []
+      for imageEditor in @getImageEditors() when imageEditor isnt this
+        if imageEditor.getFileName() is fileName
+          allPathSegments.push(imageEditor.getDirectoryPath().split(path.sep))
+
+      if allPathSegments.length is 0
+        return fileName
+
+      ourPathSegments = @getDirectoryPath().split(path.sep)
+      allPathSegments.push ourPathSegments
+
+      loop
+        firstSegment = ourPathSegments[0]
+
+        commonBase = _.all(allPathSegments, (pathSegments) -> pathSegments.length > 1 and pathSegments[0] is firstSegment)
+        if commonBase
+          pathSegments.shift() for pathSegments in allPathSegments
+        else
+          break
+
+      "#{fileName} \u2014 #{path.join(pathSegments...)}"
+    else
+      'untitled'
+
+  getFileName: ->
     if filePath = @getPath()
       path.basename(filePath)
     else
-      'untitled'
+      null
+
+  getDirectoryPath: ->
+    if fullPath = @getPath()
+      path.dirname(fullPath)
+    else
+      null
 
   # Retrieves the absolute path to the image.
   #
