@@ -25,9 +25,9 @@
     "coffeelint": "^1.9.7"
   },
   "configSchema": {
-    "defaultImageBackgroundStyle": {
-      "title": "Default Image Background Style",
-      "description": "Choose the default image background style used when opening an image.",
+    "backgroundStyle": {
+      "title": "Background Style",
+      "description": "Choose the background style used when opening an image.",
       "type": "string",
       "default": "white",
       "enum": [

@@ -50,7 +50,7 @@ class ImageEditorView extends ScrollView
       @originalHeight = @image.prop('naturalHeight')
       @originalWidth = @image.prop('naturalWidth')
       @loaded = true
-      @backgroundStyle = atom.config.get 'image-view.defaultImageBackgroundStyle'
+      @backgroundStyle = atom.config.get 'image-view.backgroundStyle'
       unless @backgroundStyle is 'transparent'
         @changeBackground @backgroundStyle
       @image.show()
@@ -64,7 +64,7 @@ class ImageEditorView extends ScrollView
       @imageControls.find('a').on 'click', (e) =>
         @backgroundStyle = $(e.target).attr 'value'
         @changeBackground @backgroundStyle
-        atom.config.set 'image-view.defaultImageBackgroundStyle', @backgroundStyle
+        atom.config.set 'image-view.backgroundStyle', @backgroundStyle
 
     @zoomInButton.on 'click', => @zoomIn()
     @zoomOutButton.on 'click', => @zoomOut()
