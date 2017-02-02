@@ -64,8 +64,7 @@ class ImageEditorView extends ScrollView
       @imageControls.find('a').on 'click', (e) =>
         @backgroundStyle = $(e.target).attr 'value'
         @changeBackground @backgroundStyle
-        if atom.config.get 'image-view.changeDefaultOnBackgroundSelection'
-          atom.config.set 'image-view.defaultImageBackgroundStyle', @backgroundStyle
+        atom.config.set 'image-view.defaultImageBackgroundStyle', @backgroundStyle
 
     @zoomInButton.on 'click', => @zoomIn()
     @zoomOutButton.on 'click', => @zoomOut()

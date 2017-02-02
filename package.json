@@ -35,12 +35,6 @@
         {"value": "black", "description": "Black Transparent"},
         {"value": "transparent", "description": "Transparent"}
       ]
-    },
-    "changeDefaultOnBackgroundSelection": {
-      "title": "Change Background Style Default on Selection",
-      "description": "When selecting a background style, set the selection as the default.",
-      "type": "boolean",
-      "default": "true"
     }
   }
 }
