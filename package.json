@@ -29,7 +29,7 @@
       "title": "Background Style",
       "description": "Choose the background style used when opening an image.",
       "type": "string",
-      "default": "white",
+      "default": "transparent",
       "enum": [
         {"value": "white", "description": "White Transparent"},
         {"value": "black", "description": "Black Transparent"},
