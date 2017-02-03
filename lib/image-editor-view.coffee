@@ -17,10 +17,10 @@ class ImageEditorView extends ScrollView
             @text 'transparent'
         @div class: 'image-controls-group btn-group', =>
           @button class: 'btn', outlet: 'zoomOutButton', '-'
-          @button class: 'btn reset-zoom-button', outlet: 'resetZoomButton', '100%'
+          @button class: 'btn reset-zoom-button', outlet: 'resetZoomButton', 'Auto'
           @button class: 'btn', outlet: 'zoomInButton', '+'
         @div class: 'image-controls-group btn-group', =>
-          @button class: 'btn selected', outlet: 'zoomToFitButton', 'Zoom to fit'
+          @button class: 'btn zoom-to-fit-button selected', outlet: 'zoomToFitButton', 'Zoom to fit'
 
       @div class: 'image-container zoom-to-fit', background: 'white', outlet: 'imageContainer', =>
         @img outlet: 'image'
