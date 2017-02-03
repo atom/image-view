@@ -69,6 +69,16 @@ describe "ImageEditorView", ->
       view.adjustSize(0)
       expect(view.resetZoomButton.text()).toBe '1%'
 
+  describe "when changing the background style", ->
+    it "has a transparent background by default", ->
+      expect(view.imageContainer.attr('background')).toBe 'transparent'
+    it "changes to a white background", ->
+      atom.config.set('image-view.backgroundStyle', 'white')
+      expect(view.imageContainer.attr('background')).toBe 'white'
+    it "changes to a black background", ->
+      atom.config.set('image-view.backgroundStyle', 'black')
+      expect(view.imageContainer.attr('background')).toBe 'black'
+
   describe "ImageEditorStatusView", ->
     [imageSizeStatus] = []
 
