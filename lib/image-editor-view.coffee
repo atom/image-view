@@ -20,9 +20,9 @@ class ImageEditorView extends ScrollView
           @button class: 'btn reset-zoom-button', outlet: 'resetZoomButton', '100%'
           @button class: 'btn', outlet: 'zoomInButton', '+'
         @div class: 'image-controls-group btn-group', =>
-          @button class: 'btn', outlet: 'zoomToFitButton', 'Zoom to fit'
+          @button class: 'btn selected', outlet: 'zoomToFitButton', 'Zoom to fit'
 
-      @div class: 'image-container', background: 'white', outlet: 'imageContainer', =>
+      @div class: 'image-container zoom-to-fit', background: 'white', outlet: 'imageContainer', =>
         @img outlet: 'image'
 
   initialize: (@editor) ->
@@ -34,7 +34,7 @@ class ImageEditorView extends ScrollView
     @disposables = new CompositeDisposable
 
     @loaded = false
-    @mode = 'reset-zoom'
+    @mode = 'zoom-to-fit'
     @image.hide()
     @updateImageURI()
 
