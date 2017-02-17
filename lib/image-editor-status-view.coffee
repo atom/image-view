@@ -29,7 +29,7 @@ class ImageEditorStatusView extends View
 
     editor = atom.workspace.getActivePaneItem()
     if editor instanceof ImageEditor
-      @editorView = $(atom.views.getView(editor)).view()
+      @editorView = editor.view
       @getImageSize(@editorView) if @editorView.loaded
       @imageLoadDisposable = @editorView.onDidLoad =>
         if editor is atom.workspace.getActivePaneItem()
