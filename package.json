@@ -9,7 +9,6 @@
     "atom": "*"
   },
   "dependencies": {
-    "atom-space-pen-views": "^2.0.0",
     "bytes": "^2.4.0",
     "etch": "^0.8.0",
     "fs-plus": "^2.0.0",
