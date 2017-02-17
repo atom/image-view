@@ -25,6 +25,9 @@ module.exports =
     @statusViewAttached = new ImageEditorStatusView(@statusBar)
     @statusViewAttached.attach()
 
+  deserialize: (state) ->
+    ImageEditor.deserialize(state)
+
 # Files with these extensions will be opened as images
 imageExtensions = ['.bmp', '.gif', '.ico', '.jpeg', '.jpg', '.png', '.webp']
 openURI = (uriToOpen) ->
