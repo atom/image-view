@@ -9,10 +9,10 @@
     "atom": "*"
   },
   "dependencies": {
-    "atom-space-pen-views": "^2.0.0",
+    "bytes": "^2.4.0",
+    "etch": "^0.8.0",
     "fs-plus": "^2.0.0",
-    "underscore-plus": "^1.0.0",
-    "bytes": "^2.4.0"
+    "underscore-plus": "^1.0.0"
   },
   "consumedServices": {
     "status-bar": {
@@ -20,6 +20,9 @@
         "^1.0.0": "consumeStatusBar"
       }
     }
+  },
+  "deserializers": {
+    "ImageEditor": "deserialize"
   },
   "devDependencies": {
     "coffeelint": "^1.9.7"

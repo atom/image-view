@@ -1,4 +1,3 @@
-{$} = require 'atom-space-pen-views'
 ImageEditorView = require '../lib/image-editor-view'
 ImageEditor = require '../lib/image-editor'
 
@@ -11,17 +10,17 @@ describe "ImageEditorView", ->
     filePath2 = atom.project.getDirectories()[0].resolve('binary-file-2.png')
     editor = new ImageEditor(filePath)
     view = new ImageEditorView(editor)
-    view.height(100)
+    view.element.style.height = '100px'
     jasmine.attachToDOM(view.element)
 
     waitsFor -> view.loaded
 
   afterEach ->
     editor.destroy()
-    view.remove()
+    view.destroy()
 
   it "displays the image for a path", ->
-    expect(view.image.attr('src')).toContain '/fixtures/binary-file.png'
+    expect(view.refs.image.src).toContain '/fixtures/binary-file.png'
 
   describe "when the image is changed", ->
     it "reloads the image", ->
@@ -46,34 +45,34 @@ describe "ImageEditorView", ->
   describe "image-view:zoom-in", ->
     it "increases the image size by 25%", ->
       atom.commands.dispatch view.element, 'image-view:zoom-in'
-      expect(view.image.width()).toBe 13
-      expect(view.image.height()).toBe 13
+      expect(view.refs.image.offsetWidth).toBe 13
+      expect(view.refs.image.offsetHeight).toBe 13
 
   describe "image-view:zoom-out", ->
     it "decreases the image size by 25%", ->
       atom.commands.dispatch view.element, 'image-view:zoom-out'
-      expect(view.image.width()).toBe 8
-      expect(view.image.height()).toBe 8
+      expect(view.refs.image.offsetWidth).toBe 8
+      expect(view.refs.image.offsetHeight).toBe 8
 
   describe "image-view:reset-zoom", ->
     it "restores the image to the original size", ->
       atom.commands.dispatch view.element, 'image-view:zoom-in'
-      expect(view.image.width()).not.toBe 10
-      expect(view.image.height()).not.toBe 10
+      expect(view.refs.image.offsetWidth).not.toBe 10
+      expect(view.refs.image.offsetHeight).not.toBe 10
       atom.commands.dispatch view.element, 'image-view:reset-zoom'
-      expect(view.image.width()).toBe 10
-      expect(view.image.height()).toBe 10
+      expect(view.refs.image.offsetWidth).toBe 10
+      expect(view.refs.image.offsetHeight).toBe 10
 
   describe ".adjustSize(factor)", ->
     it "does not allow a zoom percentage lower than 1%", ->
       view.adjustSize(0)
-      expect(view.resetZoomButton.text()).toBe '1%'
+      expect(view.refs.resetZoomButton.textContent).toBe '1%'
 
   describe "ImageEditorStatusView", ->
     [imageSizeStatus] = []
 
     beforeEach ->
-      view.detach()
+      view.destroy()
       jasmine.attachToDOM(workspaceElement)
 
       waitsForPromise ->
@@ -84,8 +83,8 @@ describe "ImageEditorView", ->
 
       runs ->
         editor = atom.workspace.getActivePaneItem()
-        view = $(atom.views.getView(atom.workspace.getActivePaneItem())).view()
-        view.height(100)
+        view = editor.view
+        view.element.style.height = '100px'
 
       waitsFor ->
         view.loaded
@@ -95,11 +94,11 @@ describe "ImageEditorView", ->
 
       runs ->
         statusBar = workspaceElement.querySelector('status-bar')
-        imageSizeStatus = $(statusBar.leftPanel.querySelector('.status-image')).view()
+        imageSizeStatus = statusBar.leftPanel.querySelector('.status-image')
         expect(imageSizeStatus).toExist()
 
     it "displays the size of the image", ->
-      expect(imageSizeStatus.text()).toBe '10x10 392B'
+      expect(imageSizeStatus.textContent).toBe '10x10 392B'
 
   describe "when special characters are used in the file name", ->
     describe "when '?' exists in the file name", ->
@@ -124,7 +123,7 @@ describe "ImageEditorView", ->
 
   describe "when multiple images are opened at the same time", ->
     beforeEach ->
-      view.detach()
+      view.destroy()
       jasmine.attachToDOM(workspaceElement)
 
       waitsForPromise ->
@@ -133,8 +132,6 @@ describe "ImageEditorView", ->
     it "correctly calculates originalWidth and originalHeight for all opened images", ->
       imageEditor1 = null
       imageEditor2 = null
-      imageEditorView1 = null
-      imageEditorView2 = null
 
       openedCount = 0
       originalOpen = atom.workspace.open.bind(atom.workspace)
@@ -155,15 +152,11 @@ describe "ImageEditorView", ->
         expect(imageEditor1).toBe instanceof ImageEditor
         expect(imageEditor2).toBe instanceof ImageEditor
 
-        imageEditorView1 = $(atom.views.getView(imageEditor1)).view()
-        imageEditorView2 = $(atom.views.getView(imageEditor2)).view()
-
       waitsFor ->
-        imageEditorView1.loaded
-        imageEditorView2.loaded
+        imageEditor1.view.loaded and imageEditor2.view.loaded
 
       runs ->
-        expect(imageEditorView1.originalWidth).toBe 10
-        expect(imageEditorView1.originalHeight).toBe 10
-        expect(imageEditorView2.originalWidth).toBe 10
-        expect(imageEditorView2.originalHeight).toBe 10
+        expect(imageEditor1.view.originalWidth).toBe 10
+        expect(imageEditor1.view.originalHeight).toBe 10
+        expect(imageEditor2.view.originalWidth).toBe 10
+        expect(imageEditor2.view.originalHeight).toBe 10
