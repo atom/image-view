@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "bytes": "^2.4.0",
-    "etch": "^0.8.0",
+    "etch": "0.9.0",
     "fs-plus": "^2.0.0",
     "underscore-plus": "^1.0.0"
   },
