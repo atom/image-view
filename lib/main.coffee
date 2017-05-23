@@ -5,12 +5,13 @@ ImageEditor = require './image-editor'
 
 module.exports =
   activate: ->
-    @statusViewAttached = false
+    @statusViewAttached = null
     @disposables = new CompositeDisposable
     @disposables.add atom.workspace.addOpener(openURI)
     @disposables.add atom.workspace.onDidChangeActivePaneItem => @attachImageEditorStatusView()
 
   deactivate: ->
+    @statusViewAttached?.destroy()
     @disposables.dispose()
 
   consumeStatusBar: (@statusBar) -> @attachImageEditorStatusView()
@@ -21,10 +22,11 @@ module.exports =
     return unless atom.workspace.getActivePaneItem() instanceof ImageEditor
 
     ImageEditorStatusView = require './image-editor-status-view'
-    view = new ImageEditorStatusView(@statusBar)
-    view.attach()
+    @statusViewAttached = new ImageEditorStatusView(@statusBar)
+    @statusViewAttached.attach()
 
-    @statusViewAttached = true
+  deserialize: (state) ->
+    ImageEditor.deserialize(state)
 
 # Files with these extensions will be opened as images
 imageExtensions = ['.bmp', '.gif', '.ico', '.jpeg', '.jpg', '.png', '.webp']

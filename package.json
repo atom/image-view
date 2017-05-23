@@ -1,6 +1,6 @@
 {
   "name": "image-view",
-  "version": "0.60.0",
+  "version": "0.61.2",
   "description": "Open images in an editor",
   "main": "./lib/main",
   "repository": "https://github.com/atom/image-view",
@@ -9,10 +9,10 @@
     "atom": "*"
   },
   "dependencies": {
-    "atom-space-pen-views": "^2.0.0",
-    "fs-plus": "^2.0.0",
-    "underscore-plus": "^1.0.0",
-    "bytes": "^2.4.0"
+    "bytes": "^2.4.0",
+    "etch": "0.9.0",
+    "fs-plus": "^3.0.0",
+    "underscore-plus": "^1.0.0"
   },
   "consumedServices": {
     "status-bar": {
@@ -20,6 +20,9 @@
         "^1.0.0": "consumeStatusBar"
       }
     }
+  },
+  "deserializers": {
+    "ImageEditor": "deserialize"
   },
   "devDependencies": {
     "coffeelint": "^1.9.7"
