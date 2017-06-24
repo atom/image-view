@@ -65,7 +65,7 @@ describe "ImageEditorView", ->
 
   describe ".adjustSize(factor)", ->
     it "does not allow a zoom percentage lower than 1%", ->
-      view.adjustSize(0)
+      view.adjustSize(-view.percentage)
       expect(view.refs.resetZoomButton.textContent).toBe '1%'
 
   describe "ImageEditorStatusView", ->
