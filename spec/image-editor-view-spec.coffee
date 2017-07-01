@@ -2,12 +2,13 @@ ImageEditorView = require '../lib/image-editor-view'
 ImageEditor = require '../lib/image-editor'
 
 describe "ImageEditorView", ->
-  [editor, view, filePath, filePath2, workspaceElement] = []
+  [editor, view, filePath, filePath2, filePath3, workspaceElement] = []
 
   beforeEach ->
     workspaceElement = atom.views.getView(atom.workspace)
     filePath = atom.project.getDirectories()[0].resolve('binary-file.png')
     filePath2 = atom.project.getDirectories()[0].resolve('binary-file-2.png')
+    filePath3 = atom.project.getDirectories()[0].resolve('gmarbles.tif')
     editor = new ImageEditor(filePath)
     view = new ImageEditorView(editor)
     view.element.style.height = '100px'
@@ -120,6 +121,11 @@ describe "ImageEditorView", ->
       it "are all replaced with escaped characters", ->
         newEditor = new ImageEditor('/test/file/a?#b#?.png')
         expect(newEditor.getEncodedURI()).toBe('file:///test/file/a%3F%23b%23%3F.png')
+
+  describe "when a tiff image is loaded", ->
+    it "shows the image correctly", ->
+      newEditor = new ImageEditor(filePath3)
+      expect(newEditor.view.refs.image.src).toMatch(/^data\:image\/png;base64,/)
 
   describe "when multiple images are opened at the same time", ->
     beforeEach ->

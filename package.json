@@ -12,6 +12,7 @@
     "bytes": "^2.4.0",
     "etch": "0.9.0",
     "fs-plus": "^3.0.0",
+    "tiff.js": "https://github.com/seikichi/tiff.js",
     "underscore-plus": "^1.0.0"
   },
   "consumedServices": {
