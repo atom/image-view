@@ -73,6 +73,20 @@ describe "ImageEditor", ->
         item.terminatePendingState()
         expect(pendingSpy).not.toHaveBeenCalled()
 
+  describe "::getAllowedLocations", ->
+    it "ensures that ImageEditor opens in workspace center", ->
+      waitsForPromise ->
+        atom.packages.activatePackage('image-view')
+
+      runs ->
+        atom.workspace.open(path.join(__dirname, 'fixtures', 'binary-file.png'), {location: 'right'})
+
+      waitsFor ->
+        atom.workspace.getActivePaneItem() instanceof ImageEditor
+
+      runs ->
+        expect(atom.workspace.getCenter().getActivePaneItem().getTitle()).toBe 'binary-file.png'
+
   describe "when the image gets reopened", ->
     beforeEach ->
       waitsForPromise ->
