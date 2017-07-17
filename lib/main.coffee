@@ -8,7 +8,7 @@ module.exports =
     @statusViewAttached = null
     @disposables = new CompositeDisposable
     @disposables.add atom.workspace.addOpener(openURI)
-    @disposables.add atom.workspace.onDidChangeActivePaneItem => @attachImageEditorStatusView()
+    @disposables.add atom.workspace.getCenter().onDidChangeActivePaneItem => @attachImageEditorStatusView()
 
   deactivate: ->
     @statusViewAttached?.destroy()
@@ -19,7 +19,7 @@ module.exports =
   attachImageEditorStatusView: ->
     return if @statusViewAttached
     return unless @statusBar?
-    return unless atom.workspace.getActivePaneItem() instanceof ImageEditor
+    return unless atom.workspace.getCenter().getActivePaneItem() instanceof ImageEditor
 
     ImageEditorStatusView = require './image-editor-status-view'
     @statusViewAttached = new ImageEditorStatusView(@statusBar)
