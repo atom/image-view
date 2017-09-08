@@ -25,8 +25,11 @@ describe "ImageEditor", ->
       runs ->
         expect(atom.workspace.getActivePaneItem().getTitle()).toBe 'binary-file.png'
         atom.workspace.destroyActivePaneItem()
-        atom.packages.deactivatePackage('image-view')
 
+      waitsFor ->
+        Promise.resolve(atom.packages.deactivatePackage('image-view'))
+
+      runs ->
         atom.workspace.open(path.join(__dirname, 'fixtures', 'binary-file.png'))
 
       waitsFor ->
