@@ -11,6 +11,12 @@ describe "ImageEditor", ->
       state.filePath = 'bogus'
       expect(ImageEditor.deserialize(state)).toBeUndefined()
 
+  describe ".copy()", ->
+    it "returns another ImageEditor for the same file", ->
+      editor = new ImageEditor(path.join(__dirname, 'fixtures', 'binary-file.png'))
+      newEditor = editor.copy()
+      expect(newEditor.getPath()).toBe(editor.getPath())
+
   describe ".activate()", ->
     it "registers a project opener that handles image file extension", ->
       waitsForPromise ->
