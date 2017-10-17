@@ -125,7 +125,14 @@ describe "ImageEditorView", ->
   describe "when a tiff image is loaded", ->
     it "shows the image correctly", ->
       newEditor = new ImageEditor(filePath3)
-      expect(newEditor.view.refs.image.src).toMatch(/^data\:image\/png;base64,/)
+
+      waitsForPromise ->
+        new Promise((resolve) ->
+          newEditor.view.onDidUpdateImage(() ->
+            expect(newEditor.view.refs.image.src).toMatch(/^data\:image\/png;base64,/)
+            resolve()
+          )
+        )
 
   describe "when multiple images are opened at the same time", ->
     beforeEach ->
