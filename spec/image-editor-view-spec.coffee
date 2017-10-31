@@ -128,7 +128,7 @@ describe "ImageEditorView", ->
 
       waitsForPromise ->
         new Promise((resolve) ->
-          newEditor.view.onDidUpdateImage(() ->
+          newEditor.view.onDidUpdateImage(->
             expect(newEditor.view.refs.image.src).toMatch(/^data\:image\/png;base64,/)
             resolve()
           )
