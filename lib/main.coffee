@@ -29,7 +29,7 @@ module.exports =
     ImageEditor.deserialize(state)
 
 # Files with these extensions will be opened as images
-imageExtensions = ['.bmp', '.gif', '.ico', '.jpeg', '.jpg', '.png', '.webp']
+imageExtensions = ['.bmp', '.gif', '.ico', '.jpeg', '.jpg', '.png', '.svg', '.webp']
 openURI = (uriToOpen) ->
   uriExtension = path.extname(uriToOpen).toLowerCase()
   if _.include(imageExtensions, uriExtension)
