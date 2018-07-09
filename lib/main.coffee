@@ -4,6 +4,12 @@ ImageEditor = require './image-editor'
 {CompositeDisposable} = require 'atom'
 
 module.exports =
+  config:
+    defaultBackgroundColor:
+      type: "string"
+      enum: ["white", "black", "transparent"]
+      default: "transparent"
+
   activate: ->
     @statusViewAttached = null
     @disposables = new CompositeDisposable
