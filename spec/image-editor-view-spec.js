@@ -4,9 +4,9 @@ const ImageEditorView = require('../lib/image-editor-view')
 const ImageEditor = require('../lib/image-editor')
 
 describe('ImageEditorView', () => {
-  let [editor, view, filePath, filePath2, workspaceElement] = []
+  let editor, view, filePath, filePath2, workspaceElement
 
-  beforeEach(() => {
+  beforeEach(async () => {
     workspaceElement = atom.views.getView(atom.workspace)
     filePath = atom.project.getDirectories()[0].resolve('binary-file.png')
     filePath2 = atom.project.getDirectories()[0].resolve('binary-file-2.png')
@@ -15,7 +15,7 @@ describe('ImageEditorView', () => {
     view.element.style.height = '100px'
     jasmine.attachToDOM(view.element)
 
-    waitsFor(() => view.loaded)
+    await conditionPromise(() => view.loaded)
   })
 
   afterEach(() => {
