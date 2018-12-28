@@ -7,6 +7,8 @@ describe('ImageEditorView', () => {
   let editor, view, filePath, filePath2, workspaceElement
 
   beforeEach(async () => {
+    jasmine.useRealClock() // Needed for conditionPromise
+
     workspaceElement = atom.views.getView(atom.workspace)
     filePath = atom.project.getDirectories()[0].resolve('binary-file.png')
     filePath2 = atom.project.getDirectories()[0].resolve('binary-file-2.png')
@@ -93,7 +95,6 @@ describe('ImageEditorView', () => {
     beforeEach(async () => {
       view.destroy()
       jasmine.attachToDOM(workspaceElement)
-      jasmine.useRealClock() // Needed for conditionPromise
 
       await atom.packages.activatePackage('image-view')
 
@@ -154,8 +155,6 @@ describe('ImageEditorView', () => {
     })
 
     it('correctly calculates originalWidth and originalHeight for all opened images', async () => {
-      jasmine.useRealClock() // Needed for conditionPromise
-
       let imageEditor1 = null
       let imageEditor2 = null
 
