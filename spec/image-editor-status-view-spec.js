@@ -3,12 +3,12 @@ const {it, fit, ffit, beforeEach, afterEach, conditionPromise, emitterEventPromi
 const fs = require('fs-plus')
 
 describe('ImageEditorStatusView', () => {
-  let filePath, filePath2, editor, statusBar, view, workspaceElement
+  let filePath, filePath2, statusBar
 
   beforeEach(async () => {
     jasmine.useRealClock() // Needed for conditionPromise
 
-    workspaceElement = atom.views.getView(atom.workspace)
+    const workspaceElement = atom.views.getView(atom.workspace)
     filePath = atom.project.getDirectories()[0].resolve('binary-file.png')
     filePath2 = atom.project.getDirectories()[0].resolve('binary-file-2.png')
     jasmine.attachToDOM(workspaceElement)
@@ -19,8 +19,8 @@ describe('ImageEditorStatusView', () => {
   })
 
   it('displays the size of the image', async () => {
-    editor = await atom.workspace.open(filePath)
-    view = editor.view
+    const editor = await atom.workspace.open(filePath)
+    const view = editor.view
     view.element.style.height = '100px'
 
     await conditionPromise(() => view.loaded)
@@ -30,8 +30,8 @@ describe('ImageEditorStatusView', () => {
   })
 
   it('updates when a different image is opened', async () => {
-    editor = await atom.workspace.open(filePath)
-    view = editor.view
+    let editor = await atom.workspace.open(filePath)
+    let view = editor.view
     view.element.style.height = '100px'
 
     await conditionPromise(() => view.loaded)
@@ -50,8 +50,8 @@ describe('ImageEditorStatusView', () => {
   })
 
   it('updates when the image is reloaded', async () => {
-    editor = await atom.workspace.open(filePath)
-    view = editor.view
+    const editor = await atom.workspace.open(filePath)
+    const view = editor.view
     view.element.style.height = '100px'
 
     await conditionPromise(() => view.loaded)
