@@ -11,8 +11,7 @@
   "dependencies": {
     "bytes": "^2.4.0",
     "etch": "0.9.0",
-    "fs-plus": "^3.0.0",
-    "underscore-plus": "^1.0.0"
+    "fs-plus": "^3.0.0"
   },
   "consumedServices": {
     "status-bar": {
@@ -25,6 +24,17 @@
     "ImageEditor": "deserialize"
   },
   "devDependencies": {
-    "coffeelint": "^1.9.7"
+    "standard": "^10.0.3"
+  },
+  "standard": {
+    "env": {
+      "atomtest": true,
+      "browser": true,
+      "jasmine": true,
+      "node": true
+    },
+    "globals": [
+      "atom"
+    ]
   }
 }
