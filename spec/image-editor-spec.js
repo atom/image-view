@@ -1,3 +1,5 @@
+const {it, fit, ffit, beforeEach, afterEach} = require('./async-spec-helpers') // eslint-disable-line no-unused-vars
+
 const path = require('path')
 const ImageEditor = require('../lib/image-editor')
 
@@ -22,100 +24,73 @@ describe('ImageEditor', () => {
   })
 
   describe('.activate()', () => {
-    it('registers a project opener that handles image file extension', () => {
-      waitsForPromise(() => atom.packages.activatePackage('image-view'))
+    it('registers a project opener that handles image file extension', async () => {
+      await atom.packages.activatePackage('image-view')
 
-      runs(() => atom.workspace.open(path.join(__dirname, 'fixtures', 'binary-file.png')))
+      let item = await atom.workspace.open(path.join(__dirname, 'fixtures', 'binary-file.png'))
 
-      waitsFor(() => atom.workspace.getActivePaneItem() instanceof ImageEditor)
+      expect(item.getTitle()).toBe('binary-file.png')
+      atom.workspace.destroyActivePaneItem()
 
-      runs(() => {
-        expect(atom.workspace.getActivePaneItem().getTitle()).toBe('binary-file.png')
-        atom.workspace.destroyActivePaneItem()
-      })
+      await atom.packages.deactivatePackage('image-view')
 
-      waitsFor(() => Promise.resolve(atom.packages.deactivatePackage('image-view')))
+      item = await atom.workspace.open(path.join(__dirname, 'fixtures', 'binary-file.png'))
 
-      runs(() => atom.workspace.open(path.join(__dirname, 'fixtures', 'binary-file.png')))
-
-      waitsFor(() => atom.workspace.getActivePaneItem() != null)
-
-      runs(() => expect(atom.workspace.getActivePaneItem() instanceof ImageEditor).toBe(false))
+      expect(item instanceof ImageEditor).toBe(false)
     })
   })
 
   describe('::onDidTerminatePendingState', () => {
-    let item = null
     let pendingSpy = null
 
-    beforeEach(() => {
+    beforeEach(async () => {
       pendingSpy = jasmine.createSpy('onDidTerminatePendingState')
 
-      waitsForPromise(() => atom.packages.activatePackage('image-view'))
+      await atom.packages.activatePackage('image-view')
     })
 
-    it('is called when pending state gets terminated for the active ImageEditor', () => {
-      runs(() => atom.workspace.open(path.join(__dirname, 'fixtures', 'binary-file.png'), {pending: true}))
+    it('is called when pending state gets terminated for the active ImageEditor', async () => {
+      const item = await atom.workspace.open(path.join(__dirname, 'fixtures', 'binary-file.png'), {pending: true})
 
-      waitsFor(() => atom.workspace.getActivePane().getPendingItem() instanceof ImageEditor)
-
-      runs(() => {
-        item = atom.workspace.getActivePane().getPendingItem()
-        expect(item.getTitle()).toBe('binary-file.png')
-        item.onDidTerminatePendingState(pendingSpy)
-        item.terminatePendingState()
-        expect(pendingSpy).toHaveBeenCalled()
-      })
+      expect(item.getTitle()).toBe('binary-file.png')
+      item.onDidTerminatePendingState(pendingSpy)
+      item.terminatePendingState()
+      expect(pendingSpy).toHaveBeenCalled()
     })
 
-    it('is not called when the ImageEditor is not pending', () => {
-      runs(() => atom.workspace.open(path.join(__dirname, 'fixtures', 'binary-file.png'), {pending: false}))
+    it('is not called when the ImageEditor is not pending', async () => {
+      const item = await atom.workspace.open(path.join(__dirname, 'fixtures', 'binary-file.png'), {pending: false})
 
-      waitsFor(() => atom.workspace.getActivePaneItem() instanceof ImageEditor)
-
-      runs(() => {
-        item = atom.workspace.getActivePaneItem()
-        expect(item.getTitle()).toBe('binary-file.png')
-        item.onDidTerminatePendingState(pendingSpy)
-        item.terminatePendingState()
-        expect(pendingSpy).not.toHaveBeenCalled()
-      })
+      expect(item.getTitle()).toBe('binary-file.png')
+      item.onDidTerminatePendingState(pendingSpy)
+      item.terminatePendingState()
+      expect(pendingSpy).not.toHaveBeenCalled()
     })
   })
 
   describe('::getAllowedLocations', () => {
-    it('ensures that ImageEditor opens in workspace center', () => {
-      waitsForPromise(() => atom.packages.activatePackage('image-view'))
+    it('ensures that ImageEditor opens in workspace center', async () => {
+      await atom.packages.activatePackage('image-view')
 
-      runs(() => atom.workspace.open(path.join(__dirname, 'fixtures', 'binary-file.png'), {location: 'right'}))
+      const item = await atom.workspace.open(path.join(__dirname, 'fixtures', 'binary-file.png'), {location: 'right'})
 
-      waitsFor(() => atom.workspace.getActivePaneItem() instanceof ImageEditor)
-
-      runs(() => expect(atom.workspace.getCenter().getActivePaneItem().getTitle()).toBe('binary-file.png'))
+      expect(item.getTitle()).toBe('binary-file.png')
     })
   })
 
   describe('when the image gets reopened', () => {
-    beforeEach(() =>
-      waitsForPromise(() => atom.packages.activatePackage('image-view'))
-    )
+    beforeEach(async () => {
+      await atom.packages.activatePackage('image-view')
+    })
 
-    it('should not change the URI between each reopen', () => {
-      let uri = null
+    it('should not change the URI between each reopen', async () => {
+      let item = await atom.workspace.open(path.join(__dirname, 'fixtures', 'binary-file.png'))
 
-      runs(() => atom.workspace.open(path.join(__dirname, 'fixtures', 'binary-file.png')))
+      const uri = item.getURI()
+      atom.workspace.destroyActivePaneItem()
+      item = await atom.workspace.reopenItem()
 
-      waitsFor(() => atom.workspace.getActivePaneItem() instanceof ImageEditor)
-
-      runs(() => {
-        uri = atom.workspace.getActivePaneItem().getURI()
-        atom.workspace.destroyActivePaneItem()
-        atom.workspace.reopenItem()
-      })
-
-      waitsFor(() => atom.workspace.getActivePaneItem() instanceof ImageEditor)
-
-      runs(() => expect(atom.workspace.getActivePaneItem().getURI()).toBe(uri))
+      expect(item.getURI()).toBe(uri)
     })
   })
 })

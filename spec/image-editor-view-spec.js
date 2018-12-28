@@ -1,8 +1,10 @@
+const {it, fit, ffit, beforeEach, afterEach, conditionPromise} = require('./async-spec-helpers') // eslint-disable-line no-unused-vars
+
 const ImageEditorView = require('../lib/image-editor-view')
 const ImageEditor = require('../lib/image-editor')
 
 describe('ImageEditorView', () => {
-  let [editor, view, filePath, filePath2, workspaceElement] = Array.from([])
+  let [editor, view, filePath, filePath2, workspaceElement] = []
 
   beforeEach(() => {
     workspaceElement = atom.views.getView(atom.workspace)
@@ -88,29 +90,24 @@ describe('ImageEditorView', () => {
   describe('ImageEditorStatusView', () => {
     let [imageSizeStatus] = []
 
-    beforeEach(() => {
+    beforeEach(async () => {
       view.destroy()
       jasmine.attachToDOM(workspaceElement)
+      jasmine.useRealClock() // Needed for conditionPromise
 
-      waitsForPromise(() => atom.packages.activatePackage('image-view'))
+      await atom.packages.activatePackage('image-view')
 
-      waitsForPromise(() => atom.workspace.open(filePath))
+      editor = await atom.workspace.open(filePath)
+      view = editor.view
+      view.element.style.height = '100px'
 
-      runs(() => {
-        editor = atom.workspace.getActivePaneItem();
-        ({view} = editor)
-        view.element.style.height = '100px'
-      })
+      await conditionPromise(() => view.loaded)
 
-      waitsFor(() => view.loaded)
+      await atom.packages.activatePackage('status-bar')
 
-      waitsForPromise(() => atom.packages.activatePackage('status-bar'))
-
-      runs(() => {
-        const statusBar = workspaceElement.querySelector('status-bar')
-        imageSizeStatus = statusBar.leftPanel.querySelector('.status-image')
-        expect(imageSizeStatus).toExist()
-      })
+      const statusBar = workspaceElement.querySelector('status-bar')
+      imageSizeStatus = statusBar.leftPanel.querySelector('.status-image')
+      expect(imageSizeStatus).toExist()
     })
 
     it('displays the size of the image', () => {
@@ -156,30 +153,21 @@ describe('ImageEditorView', () => {
       waitsForPromise(() => atom.packages.activatePackage('image-view'))
     })
 
-    it('correctly calculates originalWidth and originalHeight for all opened images', () => {
+    it('correctly calculates originalWidth and originalHeight for all opened images', async () => {
+      jasmine.useRealClock() // Needed for conditionPromise
+
       let imageEditor1 = null
       let imageEditor2 = null
 
-      let openedCount = 0
-      const originalOpen = atom.workspace.open.bind(atom.workspace)
-      spyOn(atom.workspace, 'open').andCallFake((uri, options) => originalOpen(uri, options).then(() => openedCount++))
+      await Promise.all([atom.workspace.open(filePath), atom.workspace.open(filePath2)])
 
-      runs(() => {
-        atom.workspace.open(filePath)
-        atom.workspace.open(filePath2)
-      })
+      expect(atom.workspace.getActivePane().getItems().length).toBe(2)
+      imageEditor1 = atom.workspace.getActivePane().getItems()[0]
+      imageEditor2 = atom.workspace.getActivePane().getItems()[1]
+      expect(imageEditor1 instanceof ImageEditor).toBe(true)
+      expect(imageEditor2 instanceof ImageEditor).toBe(true)
 
-      waitsFor('open to be called twice', () => openedCount === 2)
-
-      runs(() => {
-        expect(atom.workspace.getActivePane().getItems().length).toBe(2)
-        imageEditor1 = atom.workspace.getActivePane().getItems()[0]
-        imageEditor2 = atom.workspace.getActivePane().getItems()[1]
-        expect(imageEditor1 instanceof ImageEditor).toBe(true)
-        expect(imageEditor2 instanceof ImageEditor).toBe(true)
-      })
-
-      waitsFor(() => imageEditor1.view.loaded && imageEditor2.view.loaded)
+      await conditionPromise(() => imageEditor1.view.loaded && imageEditor2.view.loaded)
 
       runs(() => {
         expect(imageEditor1.view.originalWidth).toBe(10)
