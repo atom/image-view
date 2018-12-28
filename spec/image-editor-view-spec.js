@@ -89,33 +89,6 @@ describe('ImageEditorView', () => {
     })
   })
 
-  describe('ImageEditorStatusView', () => {
-    let [imageSizeStatus] = []
-
-    beforeEach(async () => {
-      view.destroy()
-      jasmine.attachToDOM(workspaceElement)
-
-      await atom.packages.activatePackage('image-view')
-
-      editor = await atom.workspace.open(filePath)
-      view = editor.view
-      view.element.style.height = '100px'
-
-      await conditionPromise(() => view.loaded)
-
-      await atom.packages.activatePackage('status-bar')
-
-      const statusBar = workspaceElement.querySelector('status-bar')
-      imageSizeStatus = statusBar.leftPanel.querySelector('.status-image')
-      expect(imageSizeStatus).toExist()
-    })
-
-    it('displays the size of the image', () => {
-      expect(imageSizeStatus.textContent).toBe('10x10 392B')
-    })
-  })
-
   describe('when special characters are used in the file name', () => {
     describe("when '?' exists in the file name", () => {
       it('is replaced with %3F', () => {
